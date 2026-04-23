@@ -22,6 +22,24 @@ SecondMe 是我的个人 AI 公司。
 - 求职相关进入 `04-career/`
 - 决策、审批和变更记录写入 `logs/`
 
+## 在 Codex 中使用 SecondMe
+
+在 Codex 中称呼 `Vincy`，即可唤醒 SecondMe 工作方式。
+
+示例：
+
+- `Vincy，帮我整理这份学习笔记`
+- `Vincy，按 SecondMe 流程分析这个岗位 JD`
+- `Vincy，帮我判断这件事应该交给哪个部门`
+
+唤醒后，Codex 默认以总经办 Chief of Staff Agent 的身份工作，先理解目标，再读取必要的治理、共享记忆和部门文档，最后协调对应部门完成任务。
+
+相关入口：
+
+- `AGENTS.md`
+- `01-ceo-office/vincy-entrypoint.md`
+- `10-harness/codex-adapter.md`
+
 ## 核心原则
 
 1. SecondMe 是组织层，harness 是执行层。
@@ -29,4 +47,3 @@ SecondMe 是我的个人 AI 公司。
 3. 自动化从低风险的信息整理开始。
 4. 写代码、改重要文档、更新 SOP 和 agent 提示词需要我确认。
 5. 电脑操作、对外发送、删除重要内容、改权限和改核心身份设定必须我批准。
-
