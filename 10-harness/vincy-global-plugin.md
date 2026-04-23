@@ -8,12 +8,15 @@ When Vince says `Vincy` in any Codex workspace, Codex should load the global Vin
 
 ## Installed Location
 
-- Plugin root: `/Users/vince/.codex/plugins/vincy`
-- Manifest: `/Users/vince/.codex/plugins/vincy/.codex-plugin/plugin.json`
-- Skill: `/Users/vince/.codex/plugins/vincy/skills/vincy/SKILL.md`
-- Local marketplace: `/Users/vince/.codex/.agents/plugins/marketplace.json`
+- Global skill root: `/Users/vince/.codex/skills/vincy`
+- Global skill file: `/Users/vince/.codex/skills/vincy/SKILL.md`
+- Plugin root: `/Users/vince/plugins/vincy`
+- Manifest: `/Users/vince/plugins/vincy/.codex-plugin/plugin.json`
+- Plugin skill: `/Users/vince/plugins/vincy/skills/vincy/SKILL.md`
+- Local marketplace: `/Users/vince/.agents/plugins/marketplace.json`
 - Codex config: `/Users/vince/.codex/config.toml`
 - Config backup: `/Users/vince/.codex/config.toml.before-vincy`
+- Config path-fix backup: `/Users/vince/.codex/config.toml.before-vincy-path-fix`
 
 ## Activation
 
@@ -49,6 +52,7 @@ If `Vincy` does not work outside `~/SecondMe`:
 
 1. Restart Codex so it reloads local plugins and config.
 2. Confirm `/Users/vince/.codex/config.toml` contains `vincy@vince-local`.
-3. Confirm `/Users/vince/.codex/plugins/vincy/skills/vincy/SKILL.md` exists.
-4. Reinstall the plugin from the files in this document if needed.
-
+3. Confirm `/Users/vince/.codex/config.toml` has `source = "/Users/vince"` for `marketplaces.vince-local`.
+4. Confirm `/Users/vince/.codex/skills/vincy/SKILL.md` exists.
+5. Confirm `/Users/vince/plugins/vincy/skills/vincy/SKILL.md` exists.
+6. Reinstall the skill and plugin from the files in this document if needed.
