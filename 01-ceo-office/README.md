@@ -14,4 +14,4 @@
 - `chief-of-staff-agent.md`：Chief of Staff Agent 岗位说明书
 - `intake-workflow.md`：任务接收和分发流程
 - `weekly-report-template.md`：周报模板
-
+- `daily-retrospective-workflow.md`：每日复盘、画像迭代和自我优化流程

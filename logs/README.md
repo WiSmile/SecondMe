@@ -7,4 +7,4 @@
 - `decision-log.md`：审批和关键决策
 - `change-log.md`：文件、规则、agent 变更
 - `run-log.md`：任务执行记录
-
+- `daily-retrospectives/`：每日复盘留痕索引和必要的日报正文归档

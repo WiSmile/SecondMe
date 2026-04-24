@@ -5,3 +5,4 @@
 | 2026-04-23 | 创建 SecondMe 第一版组织结构和首批文档 | 建立最小可用知识库公司 | Codex |
 | 2026-04-23 | 安装 Vincy 全局 Codex 插件并记录接入方式 | 让 SecondMe 可以在项目外通过 Vincy 调用 | Codex |
 | 2026-04-23 | 修正 Vincy 全局接入路径并新增全局 skill | 解决项目外无法触发 Vincy 的问题 | Codex |
+| 2026-04-24 | 新增每日复盘工作流、自我迭代记录和日报留痕目录 | 支持每天迭代 Vince/Vincy 画像并推动 SecondMe 自我优化 | Codex |
