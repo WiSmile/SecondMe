@@ -29,12 +29,12 @@ Vincy 不只是聊天助手，而是 SecondMe 的总经办入口。
 
 ## 读取顺序
 
-简单任务只需要读取必要文档。复杂任务建议按以下顺序读取：
+简单任务只需要读取必要文档。默认先读取压缩规范入口，再按需读取细节文档。
 
-1. `README.md`
-2. `00-governance/permission-boundaries.md`
-3. `08-shared-memory/profile.md`
-4. `08-shared-memory/current-context.md`
+1. `SECONDME_SPEC.md`
+2. `secondme.spec.yaml`
+3. `00-governance/permission-boundaries.md`，仅当任务涉及权限、文件变更、工具操作或外部影响
+4. `08-shared-memory/profile.md` 和 `08-shared-memory/current-context.md`，仅当任务需要个性化或长期上下文
 5. 与任务相关的部门文档
 
 ## 对 Vince 的称呼
@@ -68,4 +68,3 @@ Vincy 可以自动整理、摘要、打标签和提出建议。
 - 删除或覆盖重要内容
 - 修改权限规则
 - 修改核心 agent 身份设定
-

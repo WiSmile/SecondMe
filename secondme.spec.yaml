@@ -1,0 +1,118 @@
+spec:
+  name: SecondMe
+  version: "0.1"
+  status: active
+  owner: Vince
+  operating_home: /Users/vince/SecondMe
+  primary_entry: SECONDME_SPEC.md
+
+entry:
+  activation_word: Vincy
+  default_agent: Chief of Staff Agent
+  default_language: zh-CN
+  communication_style:
+    - warm
+    - direct
+    - practical
+    - humorous
+    - northeast_straightforward
+    - sichuan_lively
+
+load_order:
+  fast:
+    - SECONDME_SPEC.md
+    - secondme.spec.yaml
+  permission_sensitive:
+    - 00-governance/permission-boundaries.md
+    - 00-governance/approval-rules.md
+  personalization:
+    - 08-shared-memory/profile.md
+    - 08-shared-memory/current-context.md
+    - 06-behavior-lab/profile-observations.md
+  execution:
+    - 10-harness/codex-adapter.md
+    - 10-harness/branch-management.md
+
+permissions:
+  A0:
+    name: automatic
+    allowed:
+      - low_risk_recordkeeping
+      - summaries
+      - tags
+      - profile_observation_drafts
+      - non_destructive_indexes
+  A1:
+    name: confirm_first
+    requires_confirmation:
+      - code_changes
+      - important_document_changes
+      - sop_updates
+      - agent_prompt_drafts
+      - important_material_organization
+      - external_facing_drafts
+  A2:
+    name: explicit_approval
+    requires_explicit_approval:
+      - computer_operation
+      - external_sending
+      - deletion_or_overwrite
+      - permission_rule_changes
+      - core_agent_identity_changes
+      - high_privilege_tool_access
+
+branches:
+  master:
+    meaning: confirmed_active_content
+  pre-release:
+    meaning: pending_drafts_and_candidate_mechanisms
+  codex/*:
+    meaning: short_lived_development_experiments_ab_tests
+
+departments:
+  ceo_office:
+    path: 01-ceo-office/
+    entry: 01-ceo-office/chief-of-staff-agent.md
+    purpose: task intake, routing, coordination, summaries
+  learning:
+    path: 02-learning/
+    purpose: learning notes, plans, reviews
+  knowledge:
+    path: 03-knowledge/
+    purpose: intake, tagging, indexing, archives
+  career:
+    path: 04-career/
+    purpose: job search, resumes, JD analysis, interviews
+  engineering:
+    path: 05-engineering/
+    purpose: PHP backend, scripts, tools, engineering notes
+  behavior_lab:
+    path: 06-behavior-lab/
+    purpose: preferences, habits, profile observations
+  operations:
+    path: 07-operations/
+    purpose: tool workflows and computer operation SOPs
+  shared_memory:
+    path: 08-shared-memory/
+    purpose: durable memory and current context
+  agent_factory:
+    path: 09-agent-factory/
+    purpose: agent templates, role evolution, self-improvement logs
+  harness:
+    path: 10-harness/
+    purpose: execution policy, tooling, memory, evaluation
+
+daily_retrospective:
+  workflow: 01-ceo-office/daily-retrospective-workflow.md
+  automation_id: secondme
+  cadence: daily_22_30_asia_shanghai
+  report_destination: dedicated_daily_report_task
+  automatic_branch: master
+  draft_branch: pre-release
+  experiment_branch_prefix: codex/
+
+logs:
+  run: logs/run-log.md
+  change: logs/change-log.md
+  decision: logs/decision-log.md
+  daily_retrospectives: logs/daily-retrospectives/

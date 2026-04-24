@@ -15,6 +15,8 @@ SecondMe 是我的个人 AI 公司。
 
 ## 使用入口
 
+- 规范入口优先读取 `SECONDME_SPEC.md`
+- 机器可读索引见 `secondme.spec.yaml`
 - 新资料统一放入 `inbox/`
 - 当前任务由 `01-ceo-office/` 统一接收和拆解
 - 长期事实与画像沉淀到 `08-shared-memory/`
@@ -36,6 +38,8 @@ SecondMe 是我的个人 AI 公司。
 
 相关入口：
 
+- `SECONDME_SPEC.md`
+- `secondme.spec.yaml`
 - `AGENTS.md`
 - `01-ceo-office/vincy-entrypoint.md`
 - `10-harness/codex-adapter.md`

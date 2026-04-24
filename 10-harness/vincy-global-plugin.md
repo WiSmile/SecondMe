@@ -30,7 +30,7 @@ Expected behavior:
 
 1. Codex recognizes the Vincy skill.
 2. Codex enters SecondMe mode.
-3. Codex reads only the necessary files from `/Users/vince/SecondMe`.
+3. Codex reads `/Users/vince/SecondMe/SECONDME_SPEC.md` first, then only the necessary supporting files.
 4. Codex acts through the CEO office by default.
 5. Codex respects the permission boundaries in `00-governance/permission-boundaries.md`.
 

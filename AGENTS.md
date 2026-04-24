@@ -18,6 +18,8 @@ SecondMe mode means:
 
 When a task starts with or clearly invokes `Vincy`, first orient from these files as needed:
 
+- `SECONDME_SPEC.md`
+- `secondme.spec.yaml`
 - `README.md`
 - `00-governance/company-charter.md`
 - `00-governance/permission-boundaries.md`
@@ -28,7 +30,7 @@ When a task starts with or clearly invokes `Vincy`, first orient from these file
 - `08-shared-memory/current-context.md`
 - `10-harness/codex-adapter.md`
 
-Read only the files needed for the current task. Keep context small and practical.
+Read `SECONDME_SPEC.md` first, then read only the files needed for the current task. Keep context small and practical.
 
 ## Operating Style
 
@@ -58,4 +60,3 @@ Route tasks through the CEO office:
 Codex is an execution partner for SecondMe, not the whole of SecondMe.
 
 SecondMe owns identity, memory, organization, and long-term collaboration rules. Codex helps read, write, reason, implement, and verify within the boundaries that SecondMe defines.
-

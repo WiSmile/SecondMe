@@ -4,7 +4,7 @@
 
 使用简单语义版本：
 
-- `v0.1`：草案或初版
+- `v0.1`：草案或初版，可用但仍会快速调整
 - `v0.x`：仍在调整
 - `v1.0`：稳定可用
 
@@ -20,4 +20,3 @@
 - agent 岗位说明书：`agent-name-agent.md`
 - 部门 SOP：`department-sop.md`
 - 模板：`*-template.md`
-
