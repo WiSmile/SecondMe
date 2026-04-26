@@ -108,6 +108,12 @@
 - 风险与缺口
 - 明日建议
 
+## 标题规范
+
+- 每日复盘会话标题应包含绝对日期。
+- 推荐格式：`YYYY-MM-DD SecondMe 每日复盘`
+- 示例：`2026-04-26 SecondMe 每日复盘`
+
 ## 审计要求
 
 每日复盘应遵守 `00-governance/permission-boundaries.md` 和 `08-shared-memory/memory-rules.md`。
