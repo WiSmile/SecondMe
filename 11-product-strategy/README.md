@@ -23,3 +23,4 @@
 - `product-strategist-agent.md`：Product Strategist Agent 岗位说明书
 - `iteration-planning-backlog.md`：迭代规划建议需求池
 - `daily-retrospective-product-layer.md`：每日复盘的产品战略层补充说明
+- `intake-and-prioritization-workflow.md`：需求接收、入池、优先级和状态流转的最小工作流
