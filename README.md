@@ -19,6 +19,7 @@ SecondMe 是我的个人 AI 公司。
 - 机器可读索引见 `secondme.spec.yaml`
 - 新资料统一放入 `inbox/`
 - 当前任务由 `01-ceo-office/` 统一接收和拆解
+- 产品规划和迭代建议进入 `11-product-strategy/`
 - 长期事实与画像沉淀到 `08-shared-memory/`
 - 知识整理进入 `03-knowledge/`
 - 求职相关进入 `04-career/`

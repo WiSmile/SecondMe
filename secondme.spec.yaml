@@ -101,9 +101,14 @@ departments:
   harness:
     path: 10-harness/
     purpose: execution policy, tooling, memory, evaluation
+  product_strategy:
+    path: 11-product-strategy/
+    purpose: product planning, backlog, roadmap, daily retrospective product analysis
 
 daily_retrospective:
   workflow: 01-ceo-office/daily-retrospective-workflow.md
+  product_layer: 11-product-strategy/daily-retrospective-product-layer.md
+  backlog: 11-product-strategy/iteration-planning-backlog.md
   automation_id: secondme
   cadence: daily_22_30_asia_shanghai
   report_destination: dedicated_daily_report_task

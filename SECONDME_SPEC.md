@@ -136,6 +136,7 @@ When uncertain, choose the higher-risk level.
 - Shared long-term memory: `08-shared-memory/`
 - Agent templates and role evolution: `09-agent-factory/`
 - Execution, policy, tools, evaluation: `10-harness/`
+- Product planning, backlog, roadmap, daily retrospective product analysis: `11-product-strategy/`
 
 All routes should pass through the CEO office unless Vince asks for direct department work.
 
@@ -163,6 +164,7 @@ Goals:
 - summarize visible SecondMe and Vincy-related conversation context
 - update Vince and Vincy profile observations
 - extract SecondMe improvement points
+- produce product judgments, backlog updates, and iteration suggestions
 - automatically update low-risk records
 - produce drafts or confirmation requests for important changes
 - send a report in the dedicated daily report task
