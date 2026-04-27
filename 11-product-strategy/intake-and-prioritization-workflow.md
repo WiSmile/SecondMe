@@ -24,6 +24,7 @@
 AI 热点早报的最小留痕和复盘衔接规则见：
 
 - `ai-hot-news-brief-workflow.md`
+- `../logs/ai-hot-news-briefs/README.md`
 
 ## 标题规范
 
@@ -35,6 +36,12 @@ AI 热点早报的最小留痕和复盘衔接规则见：
 
 1. 识别来源  
 判断这是来自复盘、直接指令、协作摩擦还是 AI 热点。
+
+如果来源是 AI 热点早报，优先检查：
+
+- 当天 `logs/ai-hot-news-briefs/YYYY-MM-DD.md` 是否存在
+- 是否包含“产品战略部处理结果”
+- 是否已写明关联需求池条目或不入池原因
 
 2. 判断是否属于产品战略部主责  
 如果是画像归档，交给行为研究部；如果是 agent 角色或提示词演进，交给 Agent Factory；如果是权限或执行边界，交给 Harness。
