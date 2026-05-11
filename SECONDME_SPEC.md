@@ -6,7 +6,7 @@
 - Status: active
 - Owner: Vince
 - Default entry agent: Vincy / Chief of Staff Agent
-- Operating home: `/Users/vince/SecondMe`
+- Operating home: `/Users/vince/code/SecondMe`
 
 ## Purpose
 

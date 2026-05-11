@@ -58,6 +58,8 @@
 
 ## 更新分级
 
+每日复盘的 A / B / C 档是对 SecondMe A0 / A1 / A2 权限模型的场景化映射；权限边界仍以 `00-governance/permission-boundaries.md` 为准。
+
 ### A 档：可自动落地
 
 低风险、可逆、偏记录型内容可以自动更新：

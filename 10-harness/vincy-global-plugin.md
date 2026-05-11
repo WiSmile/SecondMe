@@ -4,7 +4,7 @@
 
 The Vincy global plugin lets Vince invoke SecondMe from outside the `~/SecondMe` repository.
 
-When Vince says `Vincy` in any Codex workspace, Codex should load the global Vincy skill, then use `/Users/vince/SecondMe` as SecondMe's operating home.
+When Vince says `Vincy` in any Codex workspace, Codex should load the global Vincy skill, then use `/Users/vince/code/SecondMe` as SecondMe's operating home.
 
 ## Installed Location
 
@@ -30,7 +30,7 @@ Expected behavior:
 
 1. Codex recognizes the Vincy skill.
 2. Codex enters SecondMe mode.
-3. Codex reads `/Users/vince/SecondMe/SECONDME_SPEC.md` first, then only the necessary supporting files.
+3. Codex reads `/Users/vince/code/SecondMe/SECONDME_SPEC.md` first, then only the necessary supporting files.
 4. Codex acts through the CEO office by default.
 5. Codex respects the permission boundaries in `00-governance/permission-boundaries.md`.
 

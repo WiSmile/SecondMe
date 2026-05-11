@@ -29,3 +29,8 @@
 ## 外挂知识库
 
 长期学习资料、术语库、参考资料和课程内容可写入 `/Users/vince/Documents/Obsidian-SecondMe/`。
+
+涉及 Obsidian 写入、索引、合并或新建笔记时，必须先参考：
+
+- `00-governance/workspace-map.md`
+- `07-operations/obsidian-writing-sop.md`

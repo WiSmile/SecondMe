@@ -28,3 +28,8 @@
 ## 外挂知识库
 
 学习类课程和笔记优先写入 `/Users/vince/Documents/Obsidian-SecondMe/学习/`。
+
+写入前必须先参考：
+
+- `00-governance/workspace-map.md`
+- `07-operations/obsidian-writing-sop.md`

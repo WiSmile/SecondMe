@@ -3,7 +3,7 @@ spec:
   version: "0.1"
   status: active
   owner: Vince
-  operating_home: /Users/vince/SecondMe
+  operating_home: /Users/vince/code/SecondMe
   primary_entry: SECONDME_SPEC.md
 
 entry:
@@ -32,6 +32,9 @@ load_order:
   execution:
     - 10-harness/codex-adapter.md
     - 10-harness/branch-management.md
+  workspace_routing:
+    - 00-governance/workspace-map.md
+    - 07-operations/obsidian-writing-sop.md
 
 permissions:
   A0:
