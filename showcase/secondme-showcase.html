@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SecondMe | Vince 的个人 AI 公司</title>
+  <style>
+    :root {
+      --ink: #121417;
+      --muted: #596273;
+      --line: #dfe4ec;
+      --soft-line: #eef1f5;
+      --paper: #fbfaf7;
+      --panel: #ffffff;
+      --deep: #172033;
+      --accent: #2f6f73;
+      --accent-2: #b66a38;
+      --wash: #eef5f2;
+      --shadow: 0 18px 60px rgba(23, 32, 51, 0.10);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(238, 245, 242, 0.9) 0, rgba(251, 250, 247, 0) 340px),
+        var(--paper);
+      letter-spacing: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .shell {
+      width: min(1160px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(223, 228, 236, 0.76);
+      background: rgba(251, 250, 247, 0.9);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+      min-height: 72px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 760;
+      color: var(--deep);
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border: 1px solid #cfd7df;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--accent);
+      font-weight: 800;
+      box-shadow: 0 8px 22px rgba(23, 32, 51, 0.08);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+      flex-wrap: wrap;
+      color: #3f4754;
+      font-size: 14px;
+    }
+
+    .nav-links a {
+      padding: 9px 11px;
+      border-radius: 6px;
+    }
+
+    .nav-links a:hover {
+      background: #eef3f1;
+      color: var(--deep);
+    }
+
+    .hero {
+      min-height: calc(100vh - 72px);
+      display: grid;
+      align-items: center;
+      padding: 76px 0 48px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.92fr);
+      gap: 52px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 760;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 820px;
+      color: var(--deep);
+      font-size: clamp(44px, 7vw, 84px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 720px;
+      margin: 24px 0 0;
+      color: #424b59;
+      font-size: 19px;
+      line-height: 1.72;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border: 1px solid var(--deep);
+      border-radius: 7px;
+      font-weight: 720;
+      font-size: 14px;
+    }
+
+    .button.primary {
+      color: #fff;
+      background: var(--deep);
+      box-shadow: 0 14px 32px rgba(23, 32, 51, 0.18);
+    }
+
+    .button.secondary {
+      color: var(--deep);
+      background: rgba(255, 255, 255, 0.58);
+      border-color: #cfd8df;
+    }
+
+    .hero-card {
+      position: relative;
+      border: 1px solid rgba(207, 216, 223, 0.9);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero-card-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--soft-line);
+      color: #626b77;
+      font-size: 13px;
+    }
+
+    .signal {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent);
+      font-weight: 740;
+    }
+
+    .signal::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .hero-card-body {
+      padding: 22px;
+    }
+
+    .org-flow {
+      display: grid;
+      gap: 12px;
+    }
+
+    .flow-row {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .flow-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      border: 1px solid #d6dee6;
+      border-radius: 7px;
+      color: var(--deep);
+      background: #fbfcfd;
+      font-size: 13px;
+      font-weight: 750;
+      text-align: center;
+    }
+
+    .flow-copy {
+      padding: 13px 14px;
+      border: 1px solid var(--soft-line);
+      border-radius: 7px;
+      color: var(--muted);
+      background: #fff;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .metric {
+      padding: 14px;
+      border: 1px solid var(--soft-line);
+      border-radius: 7px;
+      background: #fff;
+    }
+
+    .metric strong {
+      display: block;
+      color: var(--deep);
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    section {
+      padding: 86px 0;
+      border-top: 1px solid rgba(223, 228, 236, 0.72);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+      gap: 42px;
+      align-items: start;
+      margin-bottom: 34px;
+    }
+
+    .section-kicker {
+      margin: 0 0 12px;
+      color: var(--accent-2);
+      font-size: 12px;
+      font-weight: 780;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      color: var(--deep);
+      font-size: clamp(30px, 4.5vw, 52px);
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .section-head p,
+    .copy {
+      margin: 0;
+      color: #4c5665;
+      font-size: 16px;
+      line-height: 1.78;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      min-height: 100%;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .card h3 {
+      margin: 0 0 12px;
+      color: var(--deep);
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.72;
+      font-size: 14px;
+    }
+
+    .org-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .department {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .department .cn {
+      display: block;
+      color: var(--deep);
+      font-weight: 760;
+      line-height: 1.35;
+    }
+
+    .department .en {
+      display: block;
+      margin-top: 5px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 740;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .department p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.58;
+    }
+
+    .governance {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .levels {
+      display: grid;
+      gap: 12px;
+    }
+
+    .level {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 14px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .level-code {
+      display: grid;
+      place-items: center;
+      height: 48px;
+      border-radius: 7px;
+      color: #fff;
+      background: var(--deep);
+      font-weight: 800;
+    }
+
+    .level h3 {
+      margin: 0 0 7px;
+      color: var(--deep);
+      font-size: 16px;
+    }
+
+    .level p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.62;
+    }
+
+    .statement {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 100%;
+      padding: 26px;
+      border-radius: var(--radius);
+      color: #fff;
+      background: var(--deep);
+    }
+
+    .statement p {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.62;
+    }
+
+    .statement small {
+      display: block;
+      margin-top: 26px;
+      color: rgba(255, 255, 255, 0.68);
+      line-height: 1.6;
+    }
+
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .phase {
+      padding: 22px;
+      border-left: 3px solid var(--accent);
+      background: rgba(255, 255, 255, 0.76);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+
+    .phase .tag {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 780;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .phase h3 {
+      margin: 12px 0 10px;
+      color: var(--deep);
+      font-size: 18px;
+    }
+
+    .phase p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.66;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr);
+      gap: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .dashboard-side {
+      padding: 18px;
+      border-right: 1px solid var(--soft-line);
+      background: #f7faf8;
+    }
+
+    .dashboard-side h3,
+    .dashboard-main h3 {
+      margin: 0 0 14px;
+      color: var(--deep);
+      font-size: 16px;
+    }
+
+    .side-item {
+      padding: 12px 0;
+      border-top: 1px solid #e4e9ee;
+    }
+
+    .side-item:first-of-type {
+      border-top: 0;
+    }
+
+    .side-item strong {
+      display: block;
+      color: var(--deep);
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .side-item span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .dashboard-main {
+      padding: 22px;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .status {
+      padding: 16px;
+      border: 1px solid var(--soft-line);
+      border-radius: 7px;
+      background: #fbfcfd;
+    }
+
+    .status strong {
+      display: block;
+      color: var(--deep);
+      font-size: 16px;
+    }
+
+    .status span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .dashboard-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .dashboard-row {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 12px;
+      padding: 13px 0;
+      border-top: 1px solid var(--soft-line);
+    }
+
+    .dashboard-row strong {
+      color: var(--deep);
+      font-size: 14px;
+    }
+
+    .dashboard-row span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .footer {
+      padding: 44px 0 64px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 900px) {
+      .shell {
+        width: min(100% - 28px, 760px);
+      }
+
+      .nav-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 14px 0;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 56px 0 40px;
+      }
+
+      .hero-grid,
+      .section-head,
+      .governance,
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-grid {
+        gap: 28px;
+      }
+
+      .cards,
+      .org-grid,
+      .roadmap,
+      .metrics,
+      .status-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-side {
+        border-right: 0;
+        border-bottom: 1px solid var(--soft-line);
+      }
+
+      section {
+        padding: 62px 0;
+      }
+    }
+
+    @media (max-width: 560px) {
+      h1 {
+        font-size: 40px;
+      }
+
+      .lead {
+        font-size: 16px;
+      }
+
+      .flow-row,
+      .level,
+      .dashboard-row {
+        grid-template-columns: 1fr;
+      }
+
+      .button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="主导航">
+    <div class="shell nav-inner">
+      <a class="brand" href="#top" aria-label="返回 SecondMe 首页">
+        <span class="brand-mark">S</span>
+        <span>SecondMe</span>
+      </a>
+      <div class="nav-links">
+        <a href="#overview">项目概览</a>
+        <a href="#organization">组织结构</a>
+        <a href="#governance">治理边界</a>
+        <a href="#roadmap">路线图</a>
+        <a href="#dashboard">Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <header class="hero">
+      <div class="shell hero-grid">
+        <div>
+          <p class="eyebrow">Personal AI Company · Vince Ma</p>
+          <h1>SecondMe 不是一个聊天机器人，而是一家属于 Vince 的个人 AI 公司。</h1>
+          <p class="lead">它把身份、长期记忆、部门协作、权限治理和执行 harness 组织成一个可持续演化的个人工作系统。Codex 可以执行任务，但 SecondMe 负责保存长期身份、组织边界和协作规则。</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#overview">查看项目</a>
+            <a class="button secondary" href="#dashboard">打开 Dashboard</a>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="SecondMe 运行摘要">
+          <div class="hero-card-header">
+            <span>Operating Home</span>
+            <span class="signal">Active v0.1</span>
+          </div>
+          <div class="hero-card-body">
+            <div class="org-flow">
+              <div class="flow-row">
+                <div class="flow-label">Vincy</div>
+                <div class="flow-copy">Codex 中的 SecondMe 入口，默认以 Chief of Staff Agent 身份接收任务。</div>
+              </div>
+              <div class="flow-row">
+                <div class="flow-label">CEO Office</div>
+                <div class="flow-copy">总经办负责理解目标、路由部门、检查权限边界，并保持 Vince 的最终决策权。</div>
+              </div>
+              <div class="flow-row">
+                <div class="flow-label">Departments</div>
+                <div class="flow-copy">学习、知识、职业、工程、运营、记忆、Harness 和产品战略各自承担可复用职责。</div>
+              </div>
+            </div>
+            <div class="metrics">
+              <div class="metric">
+                <strong>3</strong>
+                <span>权限等级</span>
+              </div>
+              <div class="metric">
+                <strong>11</strong>
+                <span>组织模块</span>
+              </div>
+              <div class="metric">
+                <strong>1</strong>
+                <span>统一入口</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <section id="overview">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Project Overview</p>
+            <h2>一个把 AI 协作组织化的个人系统。</h2>
+          </div>
+          <p>SecondMe 的第一版定位是“文档驱动的最小可用 AI 公司”。它先建立组织结构、权限边界、部门职责和 agent 岗位说明书，再逐步服务学习沉淀、求职成长、开发协作、个人画像和电脑操作。</p>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <h3>组织层，而不是单一工具</h3>
+            <p>SecondMe 不把 AI 当成孤立助手，而是把任务入口、部门职责、长期记忆和治理规则组织成可运行的公司结构。</p>
+          </article>
+          <article class="card">
+            <h3>Codex 是执行伙伴</h3>
+            <p>Codex 可以读写、推理、实现和验证，但不替代 SecondMe 的身份、记忆和长期协作规则。</p>
+          </article>
+          <article class="card">
+            <h3>重要变化可确认、可追踪</h3>
+            <p>规则、SOP、代码和对外材料需要确认；电脑操作、外部发送、删除和权限变化需要明确批准。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="organization">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Organization</p>
+            <h2>通过总经办路由，再交给专业部门处理。</h2>
+          </div>
+          <p>Vince 主要对接 Vincy 和总经办。其他部门像公司里的职能团队一样保存知识、执行流程、产出材料，并把重要结果沉淀回 SecondMe。</p>
+        </div>
+
+        <div class="org-grid">
+          <article class="department"><span class="cn">总经办</span><span class="en">CEO Office</span><p>任务接收、拆解、路由、总结和跨部门协调。</p></article>
+          <article class="department"><span class="cn">治理</span><span class="en">Governance</span><p>公司章程、权限边界、操作原则和安全审查。</p></article>
+          <article class="department"><span class="cn">学习</span><span class="en">Learning</span><p>学习计划、复习模板和学习知识协作。</p></article>
+          <article class="department"><span class="cn">知识</span><span class="en">Knowledge</span><p>资料接收、标签、索引、归档和知识条目。</p></article>
+          <article class="department"><span class="cn">职业</span><span class="en">Career</span><p>JD 分析、简历材料、面试准备和求职策略。</p></article>
+          <article class="department"><span class="cn">工程</span><span class="en">Engineering</span><p>脚本、小工具、开发协作和工程经验沉淀。</p></article>
+          <article class="department"><span class="cn">行为研究</span><span class="en">Behavior Lab</span><p>偏好、习惯、个人画像观察和沟通质量改进。</p></article>
+          <article class="department"><span class="cn">运营</span><span class="en">Operations</span><p>工具工作流、电脑操作 SOP 和执行约束。</p></article>
+          <article class="department"><span class="cn">共享记忆</span><span class="en">Shared Memory</span><p>长期事实、当前上下文和记忆规则。</p></article>
+          <article class="department"><span class="cn">Agent 工厂</span><span class="en">Agent Factory</span><p>角色模板、岗位演进和 agent 变更流程。</p></article>
+          <article class="department"><span class="cn">Harness 执行层</span><span class="en">Harness</span><p>执行策略、工具、分支、评估和适配器。</p></article>
+          <article class="department"><span class="cn">产品战略</span><span class="en">Product Strategy</span><p>需求池、产品规划、路线图和迭代建议。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="governance">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Governance</p>
+            <h2>SecondMe 的能力先被边界约束，再被自动化放大。</h2>
+          </div>
+          <p>这个项目的可信度来自权限模型。SecondMe 不追求无边界自动化，而是先确认什么能自动做、什么要 Vince 确认、什么必须明确批准。</p>
+        </div>
+
+        <div class="governance">
+          <div class="levels">
+            <article class="level">
+              <div class="level-code">A0</div>
+              <div>
+                <h3>自动执行</h3>
+                <p>低风险、可逆、以整理和记录为主，例如摘要、标签建议、低风险索引和归档建议。</p>
+              </div>
+            </article>
+            <article class="level">
+              <div class="level-code">A1</div>
+              <div>
+                <h3>确认后执行</h3>
+                <p>代码、重要文档、SOP、agent 提示词草稿和对外材料，需要先给出方案并等待确认。</p>
+              </div>
+            </article>
+            <article class="level">
+              <div class="level-code">A2</div>
+              <div>
+                <h3>必须明确批准</h3>
+                <p>电脑操作、外部发送、删除、权限规则变化、核心身份设定变化和高权限工具接入。</p>
+              </div>
+            </article>
+          </div>
+          <aside class="statement">
+            <p>SecondMe 的目标不是替 Vince 做决定，而是把输入变成更清晰的任务、记录和可复用知识。</p>
+            <small>Vince 是 owner、boss 和最终决策人；Vincy 是总经办入口；Codex 是执行伙伴。</small>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="roadmap">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Roadmap</p>
+            <h2>从文档驱动开始，逐步走向可验证的长期协作。</h2>
+          </div>
+          <p>SecondMe 当前不急着追求复杂自动化，而是先把组织结构、权限模型、需求归档和可复用工作流打牢。</p>
+        </div>
+
+        <div class="roadmap">
+          <article class="phase">
+            <span class="tag">Now</span>
+            <h3>文档驱动的最小可用 AI 公司</h3>
+            <p>已建立核心规范、总经办入口、部门文件、共享记忆、Harness 约束和产品战略部。</p>
+          </article>
+          <article class="phase">
+            <span class="tag">Next</span>
+            <h3>展示页与需求归档</h3>
+            <p>把 SecondMe 项目变成可展示、可复盘、可继续协作的产品化需求和静态页面。</p>
+          </article>
+          <article class="phase">
+            <span class="tag">Later</span>
+            <h3>低风险自动化和验证闭环</h3>
+            <p>从信息整理、需求跟踪和每日复盘开始，逐步接入更强的工具、评估和自动化能力。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboard">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Dashboard</p>
+            <h2>内部地图放在菜单里，帮助快速恢复上下文。</h2>
+          </div>
+          <p>Dashboard 不是主页的主叙事，而是 Vince 自己切换上下文时的工作台：看状态、看部门、看记忆和日志入口、看下一步迭代。</p>
+        </div>
+
+        <div class="dashboard">
+          <aside class="dashboard-side">
+            <h3>部门导航</h3>
+            <div class="side-item"><strong>总经办 CEO Office</strong><span>任务入口与协调中心</span></div>
+            <div class="side-item"><strong>产品战略 Product Strategy</strong><span>需求池、路线图、迭代建议</span></div>
+            <div class="side-item"><strong>治理 Governance</strong><span>权限、原则、安全审查</span></div>
+            <div class="side-item"><strong>工程 Engineering</strong><span>页面、脚本、小工具</span></div>
+            <div class="side-item"><strong>共享记忆 Shared Memory</strong><span>长期事实与当前上下文</span></div>
+          </aside>
+
+          <div class="dashboard-main">
+            <h3>当前状态</h3>
+            <div class="status-grid">
+              <div class="status"><strong>Spec v0.1</strong><span>SecondMe 规范处于 active 状态。</span></div>
+              <div class="status"><strong>需求 PS-2026-008</strong><span>展示页需求已进入产品部归档。</span></div>
+              <div class="status"><strong>A0 / A1 / A2</strong><span>权限边界已经成为默认执行前置条件。</span></div>
+            </div>
+
+            <div class="dashboard-list">
+              <div class="dashboard-row">
+                <strong>入口文件</strong>
+                <span>优先读取 `SECONDME_SPEC.md`，再按任务需要读取部门文件，避免无意义全量扫描。</span>
+              </div>
+              <div class="dashboard-row">
+                <strong>需求归档</strong>
+                <span>产品部 `requirements/` 只在明确提到需求编号、项目名或历史需求时读取对应子目录。</span>
+              </div>
+              <div class="dashboard-row">
+                <strong>协作原则</strong>
+                <span>重要变化先确认，高风险操作要明确批准，Vince 保留最终决策权。</span>
+              </div>
+              <div class="dashboard-row">
+                <strong>下一步</strong>
+                <span>验证展示页视觉和响应式布局，再根据实际使用反馈调整 Dashboard 的信息密度。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell footer-inner">
+      <span>SecondMe · Vince 的个人 AI 公司</span>
+      <span>Operating home: /Users/vince/code/SecondMe</span>
+    </div>
+  </footer>
+</body>
+</html>

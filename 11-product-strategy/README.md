@@ -6,6 +6,7 @@
 
 - 发现 SecondMe 的产品问题、协作摩擦和增长机会
 - 维护“迭代规划建议需求池”，避免好想法丢失或一次性做重
+- 归档已确认启动或需要完整上下文的产品需求
 - 给需求标注优先级、建议启动时机和触发条件
 - 为已确认需求提供推荐方案、关联部门和跟进状态
 - 在每日复盘中输出产品战略视角
@@ -25,3 +26,13 @@
 - `daily-retrospective-product-layer.md`：每日复盘的产品战略层补充说明
 - `intake-and-prioritization-workflow.md`：需求接收、入池、优先级和状态流转的最小工作流
 - `ai-hot-news-brief-workflow.md`：AI 热点早报的最小留痕与复盘衔接规则
+
+## 需求归档区
+
+- `requirements/`：产品部需求项目归档区，用于保存已确认启动、需要跨上下文协作或需要完整设计记录的需求。
+
+读取规则：
+
+- Vincy 默认不要全面扫描 `requirements/`。
+- 只有当 Vince 明确提到某个需求编号、需求名称、项目名，或当前任务需要查询历史需求时，才读取对应子目录。
+- 恢复某个需求上下文时，优先读取该需求子目录下的 `README.md`，再按需读取 `requirement.md`、`design.md`、`implementation-plan.md` 或 `notes.md`。
