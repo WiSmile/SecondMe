@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SecondMe Dashboard | 工作台</title>
+  <style>
+    :root {
+      --ink: #111827;
+      --muted: #5b6575;
+      --line: #d9e1ea;
+      --soft-line: #edf1f6;
+      --paper: #f6f8fb;
+      --panel: #ffffff;
+      --deep: #101b2f;
+      --accent: #167a76;
+      --accent-soft: #e8f3f1;
+      --amber: #8a5b2e;
+      --shadow: 0 18px 54px rgba(17, 31, 53, 0.10);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      letter-spacing: 0;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    button {
+      font: inherit;
+    }
+
+    code {
+      padding: 2px 5px;
+      border: 1px solid var(--soft-line);
+      border-radius: 5px;
+      color: #27435f;
+      background: #f8fafc;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      height: 64px;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(246, 248, 251, 0.94);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--deep);
+      font-weight: 780;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border: 1px solid #cfd7df;
+      border-radius: 8px;
+      color: var(--accent);
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(17, 31, 53, 0.08);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #3f4754;
+      font-size: 14px;
+    }
+
+    .top-actions a {
+      padding: 8px 10px;
+      border-radius: 6px;
+    }
+
+    .top-actions a:hover {
+      background: #eef3f1;
+      color: var(--deep);
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 236px minmax(0, 1fr);
+      min-height: calc(100vh - 64px);
+    }
+
+    .rail {
+      position: sticky;
+      top: 64px;
+      align-self: start;
+      height: calc(100vh - 64px);
+      overflow: auto;
+      border-right: 1px solid var(--line);
+      background: #101b2f;
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    .rail-head {
+      padding: 18px 16px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .rail-head span {
+      display: block;
+      color: rgba(255, 255, 255, 0.54);
+      font-size: 11px;
+      font-weight: 760;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .rail-head strong {
+      display: block;
+      margin-top: 7px;
+      color: #fff;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .dept-list {
+      display: grid;
+      gap: 4px;
+      padding: 12px;
+    }
+
+    .dept-button {
+      width: 100%;
+      border: 0;
+      border-radius: 7px;
+      cursor: pointer;
+      text-align: left;
+      letter-spacing: 0;
+    }
+
+    .dept-button {
+      padding: 11px 12px;
+      color: rgba(255, 255, 255, 0.78);
+      background: transparent;
+    }
+
+    .dept-button:hover,
+    .dept-button.active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.10);
+    }
+
+    .dept-button strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .dept-button span {
+      display: block;
+      margin-top: 3px;
+      color: rgba(255, 255, 255, 0.48);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .content {
+      min-width: 0;
+      padding: 28px;
+    }
+
+    .workspace {
+      display: grid;
+      gap: 18px;
+      max-width: 1040px;
+    }
+
+    .hero-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 240px;
+      gap: 24px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(232, 243, 241, 0.95), rgba(255, 255, 255, 0.82)),
+        #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      margin: 0 0 9px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 780;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--deep);
+      font-size: 34px;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .summary {
+      margin: 14px 0 0;
+      color: #4d5868;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .meta-card {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+      padding: 16px;
+      border: 1px solid rgba(22, 122, 118, 0.16);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.76);
+    }
+
+    .meta-card div {
+      display: grid;
+      gap: 4px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--soft-line);
+    }
+
+    .meta-card div:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .meta-card span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .meta-card strong {
+      color: var(--deep);
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .insight-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: 0 12px 34px rgba(17, 31, 53, 0.05);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 15px 17px;
+      border-bottom: 1px solid var(--soft-line);
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      color: var(--deep);
+      font-size: 17px;
+      line-height: 1.3;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 0 9px;
+      border-radius: 999px;
+      color: #1f6b54;
+      background: #edf7f1;
+      font-size: 12px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    .panel-body {
+      padding: 17px;
+    }
+
+    .text-list {
+      display: grid;
+      gap: 11px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .text-list li {
+      padding: 12px 0;
+      border-top: 1px solid var(--soft-line);
+      color: #4d5868;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .text-list li:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .file-detail {
+      display: grid;
+      gap: 12px;
+    }
+
+    .file-browser {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      min-height: 280px;
+    }
+
+    .file-list {
+      display: grid;
+      align-content: start;
+      gap: 4px;
+      padding: 12px;
+      border-right: 1px solid var(--soft-line);
+      background: #fbfcfd;
+    }
+
+    .file-button {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      color: #3e4a59;
+      background: transparent;
+      cursor: pointer;
+      text-align: left;
+      letter-spacing: 0;
+    }
+
+    .file-button:hover,
+    .file-button.active {
+      border-color: #cfe0df;
+      color: var(--deep);
+      background: var(--accent-soft);
+    }
+
+    .file-button strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.36;
+    }
+
+    .file-button span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .file-preview {
+      display: grid;
+      align-content: start;
+      gap: 14px;
+      padding: 18px;
+    }
+
+    .file-preview h3 {
+      margin: 0;
+      color: var(--deep);
+      font-size: 20px;
+      line-height: 1.3;
+    }
+
+    .file-preview .file-kind {
+      width: fit-content;
+    }
+
+    .file-source {
+      max-height: 520px;
+      margin: 0;
+      padding: 16px;
+      overflow: auto;
+      border: 1px solid var(--soft-line);
+      border-radius: 8px;
+      color: #263445;
+      background: #fbfcfd;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      line-height: 1.62;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .path {
+      display: block;
+      color: #405064;
+      font-size: 13px;
+      line-height: 1.55;
+      word-break: break-word;
+    }
+
+    .file-detail p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.68;
+    }
+
+    .flow {
+      display: grid;
+      gap: 10px;
+    }
+
+    .flow-node {
+      position: relative;
+      padding: 13px 14px;
+      border: 1px solid #d8e5e3;
+      border-radius: 8px;
+      background: #fbfdfc;
+    }
+
+    .flow-node::after {
+      content: "";
+      position: absolute;
+      left: 28px;
+      bottom: -11px;
+      width: 1px;
+      height: 11px;
+      background: #b8cfcb;
+    }
+
+    .flow-node:last-child::after {
+      display: none;
+    }
+
+    .flow-node strong {
+      display: block;
+      color: var(--deep);
+      font-size: 14px;
+      line-height: 1.36;
+    }
+
+    .flow-node span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .app {
+        grid-template-columns: 220px minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 820px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        height: auto;
+        padding: 13px 16px;
+      }
+
+      .app,
+      .hero-panel,
+      .insight-grid,
+      .file-browser {
+        grid-template-columns: 1fr;
+      }
+
+      .rail {
+        position: static;
+        height: auto;
+        border-right: 0;
+      }
+
+      .dept-list {
+        grid-template-columns: 1fr;
+      }
+
+      .file-list {
+        border-right: 0;
+        border-bottom: 1px solid var(--soft-line);
+      }
+
+      .content {
+        padding: 18px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="secondme-showcase.html">
+      <span class="brand-mark">S</span>
+      <span>SecondMe 工作台</span>
+    </a>
+    <nav class="top-actions" aria-label="顶部导航">
+      <a href="secondme-showcase.html">展示页</a>
+      <a href="#" id="reset-view">总经办</a>
+    </nav>
+  </header>
+
+  <main class="app">
+    <aside class="rail" aria-label="部门列表">
+      <div class="rail-head">
+        <span>Departments</span>
+        <strong>部门列表</strong>
+      </div>
+      <div class="dept-list" id="dept-list"></div>
+    </aside>
+
+    <section class="content" aria-live="polite">
+      <div class="workspace">
+        <article class="hero-panel">
+          <div>
+            <p class="eyebrow" id="dept-en">CEO Office</p>
+            <h1 id="dept-name">总经办</h1>
+            <p class="summary" id="dept-summary"></p>
+          </div>
+          <aside class="meta-card">
+            <div><span>状态</span><strong id="dept-status"></strong></div>
+            <div><span>主责</span><strong id="dept-owner"></strong></div>
+            <div><span>入口</span><strong id="dept-entry"></strong></div>
+          </aside>
+        </article>
+
+        <div class="insight-grid">
+          <article class="panel">
+            <div class="panel-head">
+              <h2>当前职责</h2>
+              <span class="pill">Scope</span>
+            </div>
+            <div class="panel-body">
+              <ul class="text-list" id="responsibilities"></ul>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <h2>工作流图</h2>
+              <span class="pill">Workflow</span>
+            </div>
+            <div class="panel-body">
+              <div class="flow" id="workflow"></div>
+            </div>
+          </article>
+        </div>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h2>部门文件</h2>
+            <span class="pill" id="file-kicker">Files</span>
+          </div>
+          <div class="file-browser">
+            <div class="file-list" id="file-list" aria-label="部门文件名称"></div>
+            <div class="file-preview">
+              <span class="pill file-kind" id="selected-file-type">File</span>
+              <h3 id="selected-file-title">文件详情</h3>
+              <span class="path" id="selected-file-path"></span>
+              <pre class="file-source" id="selected-file-content"></pre>
+            </div>
+          </div>
+        </article>
+
+        <p class="footer-note">提示：这个 Dashboard 是静态工作台，不会自动读取仓库。它的作用是减少上下文恢复成本：先选部门，再看入口文件和工作流。</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const departments = [
+      {
+        id: "ceo",
+        name: "总经办",
+        en: "CEO Office",
+        status: "主入口 / Active",
+        owner: "Chief of Staff Agent",
+        entry: "01-ceo-office/README.md",
+        summary: "总经办是 Vince 与 SecondMe 的主要交互入口，负责接收目标、判断部门、拆解任务、协调 agent、汇总结果和维护复盘。",
+        responsibilities: ["接收 Vince 的目标和新任务", "判断任务所属部门和权限等级", "拆解任务、协调部门并汇总结果", "发起每日复盘，并协调产品战略部输出产品判断"],
+        files: [
+          ["简介", "README.md", "01-ceo-office/README.md", "总经办职责、入口和第一批文件。"],
+          ["Agent", "chief-of-staff-agent.md", "01-ceo-office/chief-of-staff-agent.md", "Chief of Staff Agent 岗位说明书。"],
+          ["工作流", "vincy-demand-workflow.md", "01-ceo-office/vincy-demand-workflow.md", "把 Vince 的想法转成目标、方案、任务和验收结果。"],
+          ["复盘", "daily-retrospective-workflow.md", "01-ceo-office/daily-retrospective-workflow.md", "每日复盘、画像迭代和自我优化流程。"]
+        ],
+        flow: [["接收任务", "理解 Vince 的目标和当前上下文"], ["部门路由", "判断任务属于哪个部门，必要时跨部门协调"], ["权限判断", "区分 A0 / A1 / A2"], ["澄清与确认", "明确终局、边界和验收标准"], ["执行与记录", "完成低风险执行，重要变化留下日志"]]
+      },
+      {
+        id: "governance",
+        name: "治理",
+        en: "Governance",
+        status: "已建立 / Guardrails",
+        owner: "Safety Reviewer Agent",
+        entry: "00-governance/README.md",
+        summary: "治理部门负责章程、权限边界、行为准则、审批规则和风险控制，是 SecondMe 的可信边界。",
+        responsibilities: ["维护公司章程和操作原则", "定义自动化、确认、批准三层权限边界", "管理审批分类和记录要求", "提供安全审查角色"],
+        files: [
+          ["简介", "README.md", "00-governance/README.md", "治理审计部职责和入口文件。"],
+          ["权限", "permission-boundaries.md", "00-governance/permission-boundaries.md", "A0 / A1 / A2 权限模型。"],
+          ["原则", "operating-principles.md", "00-governance/operating-principles.md", "全体 agent 行为原则。"],
+          ["审批", "approval-rules.md", "00-governance/approval-rules.md", "审批分类和记录要求。"]
+        ],
+        flow: [["识别动作", "判断任务是否改变文件、工具、外部状态或身份"], ["评估风险", "低风险整理、重要变更或高风险操作"], ["选择权限级别", "A0 自动，A1 确认，A2 明确批准"], ["执行或暂停", "按权限结果继续、请求确认或等待批准"]]
+      },
+      {
+        id: "product",
+        name: "产品战略",
+        en: "Product Strategy",
+        status: "活跃 / Demand Hub",
+        owner: "Product Strategist Agent",
+        entry: "11-product-strategy/README.md",
+        summary: "产品战略部把对话、画像变化、SecondMe 自我优化点和 AI 热点转成需求池、产品规划和迭代建议。",
+        responsibilities: ["发现产品问题、协作摩擦和增长机会", "维护迭代规划建议需求池", "归档已确认启动或需要完整上下文的产品需求", "为已确认需求提供推荐方案、关联部门和跟进状态"],
+        files: [
+          ["简介", "README.md", "11-product-strategy/README.md", "产品战略部职责和需求归档读取规则。"],
+          ["需求池", "iteration-planning-backlog.md", "11-product-strategy/iteration-planning-backlog.md", "需求编号、优先级、状态和关联部门。"],
+          ["工作流", "intake-and-prioritization-workflow.md", "11-product-strategy/intake-and-prioritization-workflow.md", "需求接收、入池、优先级和状态流转。"],
+          ["需求", "PS-2026-008 README.md", "11-product-strategy/requirements/PS-2026-008-secondme-showcase/README.md", "SecondMe 展示页需求项目入口。"]
+        ],
+        flow: [["识别输入", "来自 Vince 指令、每日复盘、协作摩擦或 AI 热点"], ["判断归属", "确认是否属于产品战略主责"], ["入池或观察", "记录需求池条目，设置优先级和启动时机"], ["升级需求项目", "已确认启动或需要完整上下文时进入 requirements/"], ["跟进状态", "持续更新待观察、待确认、已排期、已上线待验证等状态"]]
+      },
+      {
+        id: "learning",
+        name: "学习",
+        en: "Learning",
+        status: "已建立 / Capability",
+        owner: "Learning Coach Agent",
+        entry: "02-learning/README.md",
+        summary: "学习发展部的核心使命是把知识变成能力，负责学习目标、路径、练习、阶段复盘和复习节奏。",
+        responsibilities: ["明确学习目标和完成标准", "设计循序渐进的学习路径", "把知识点转成练习、项目任务和面试表达", "与知识管理部协作，保证可追溯、可检索、可复习"],
+        files: [
+          ["简介", "README.md", "02-learning/README.md", "学习发展部职责和外挂知识库规则。"],
+          ["Agent", "learning-coach-agent.md", "02-learning/learning-coach-agent.md", "Learning Coach Agent 岗位说明书。"],
+          ["模板", "learning-plan-template.md", "02-learning/learning-plan-template.md", "学习计划模板。"],
+          ["复盘", "review-template.md", "02-learning/review-template.md", "阶段复盘模板。"]
+        ],
+        flow: [["明确目标", "为什么学，学完要能做什么"], ["拆学习路径", "主题拆成课程、任务和练习"], ["练习应用", "输出代码练习、项目应用或面试表达"], ["阶段复盘", "记录事实、卡点和下一步"], ["沉淀复习", "转成可复习资料或 Obsidian 笔记"]]
+      },
+      {
+        id: "knowledge",
+        name: "知识",
+        en: "Knowledge",
+        status: "已建立 / Archive",
+        owner: "Archivist Agent",
+        entry: "03-knowledge/README.md",
+        summary: "知识管理部负责把材料变成资产，处理资料入库、清洗、标签、去重、索引和归档。",
+        responsibilities: ["处理 inbox、网页、课程、代码片段和面试资料", "标准化知识条目，保留来源和上下文", "维护主题索引和标签体系", "筛选共享记忆候选"],
+        files: [
+          ["简介", "README.md", "03-knowledge/README.md", "知识管理部职责和外挂知识库规则。"],
+          ["Agent", "archivist-agent.md", "03-knowledge/archivist-agent.md", "Archivist Agent 岗位说明书。"],
+          ["标签", "taxonomy.md", "03-knowledge/taxonomy.md", "第一版标签体系。"],
+          ["工作流", "inbox-processing.md", "03-knowledge/inbox-processing.md", "资料入库流程。"]
+        ],
+        flow: [["接收资料", "来自 inbox、网页、课程、代码片段或面试资料"], ["清洗结构", "保留来源、上下文、摘要和状态"], ["打标签建索引", "进入主题索引和标签体系"], ["去重归档", "合并重复材料，避免丢失细节"], ["沉淀候选", "重要事实或偏好建议同步共享记忆"]]
+      },
+      {
+        id: "career",
+        name: "职业",
+        en: "Career",
+        status: "可用 / Career Kit",
+        owner: "Career Strategist Agent",
+        entry: "04-career/README.md",
+        summary: "职业发展部负责岗位分析、简历版本、面试训练、项目故事和求职策略。",
+        responsibilities: ["分析岗位 JD 和匹配度", "维护简历版本和优化记录", "准备面试材料和项目故事", "支持求职策略判断"],
+        files: [
+          ["简介", "README.md", "04-career/README.md", "职业发展部职责和文件入口。"],
+          ["Agent", "career-strategist-agent.md", "04-career/career-strategist-agent.md", "Career Strategist Agent 岗位说明书。"],
+          ["简历", "resume-notes.md", "04-career/resume-notes.md", "简历优化记录。"],
+          ["模板", "job-analysis-template.md", "04-career/job-analysis-template.md", "岗位分析模板。"]
+        ],
+        flow: [["输入岗位", "读取 JD、公司和岗位要求"], ["匹配分析", "判断经历、技能和风险缺口"], ["材料调整", "生成简历版本、项目故事或面试提纲"], ["确认外发", "对外材料必须经 Vince 确认后使用"]]
+      },
+      {
+        id: "engineering",
+        name: "工程",
+        en: "Engineering",
+        status: "可用 / Builder",
+        owner: "Builder Agent",
+        entry: "05-engineering/README.md",
+        summary: "研发工程部负责 PHP 经验沉淀、项目复盘、脚本、小工具和未来开发协作。",
+        responsibilities: ["实现静态页面、脚本和小工具", "沉淀 PHP / 后端经验", "记录工具想法和工程复盘", "配合 Harness 做可验证执行"],
+        files: [
+          ["简介", "README.md", "05-engineering/README.md", "研发工程部职责和入口。"],
+          ["Agent", "builder-agent.md", "05-engineering/builder-agent.md", "Builder Agent 岗位说明书。"],
+          ["经验", "php-notes.md", "05-engineering/php-notes.md", "PHP 后端知识沉淀入口。"],
+          ["想法", "tool-ideas.md", "05-engineering/tool-ideas.md", "未来小工具想法。"]
+        ],
+        flow: [["明确需求", "确认目标、交付物和验收标准"], ["设计实现", "尽量沿用现有结构和低复杂度方案"], ["编码验证", "改动后运行可证明结果的检查"], ["记录交付", "重要产物进入对应部门或日志"]]
+      },
+      {
+        id: "memory",
+        name: "共享记忆",
+        en: "Shared Memory",
+        status: "核心资产 / Memory",
+        owner: "Shared Memory",
+        entry: "08-shared-memory/README.md",
+        summary: "共享记忆保存跨部门共用的长期信息，包括个人画像、目标、偏好、重要事实和当前上下文。",
+        responsibilities: ["保存稳定事实和当前上下文", "区分事实、偏好、推断和待确认观察", "给跨部门协作提供共同记忆", "避免把一次性情绪过拟合成长期规则"],
+        files: [
+          ["简介", "README.md", "08-shared-memory/README.md", "共享记忆职责和入口。"],
+          ["画像", "profile.md", "08-shared-memory/profile.md", "Vince 基础画像。"],
+          ["上下文", "current-context.md", "08-shared-memory/current-context.md", "当前阶段上下文。"],
+          ["规则", "memory-rules.md", "08-shared-memory/memory-rules.md", "记忆写入规则。"]
+        ],
+        flow: [["识别记忆候选", "事实、偏好、重要决策或稳定观察"], ["判断类型", "区分事实、确认偏好、推断和待确认观察"], ["选择落点", "共享记忆、行为研究或日志"], ["低风险记录", "必要时追加来源、日期、置信度和确认状态"]]
+      },
+      {
+        id: "harness",
+        name: "Harness",
+        en: "Execution Layer",
+        status: "边界优先 / Runtime",
+        owner: "Harness",
+        entry: "10-harness/README.md",
+        summary: "Harness 是 SecondMe 的执行层，负责调度、日志、权限、工具调用和评估，第一阶段先定义模块边界。",
+        responsibilities: ["定义任务调度、工具和权限边界", "管理分支、日志和评估规则", "连接 Codex adapter 和未来工具", "保障执行可追踪、可复盘"],
+        files: [
+          ["简介", "README.md", "10-harness/README.md", "Harness 模块边界。"],
+          ["适配", "codex-adapter.md", "10-harness/codex-adapter.md", "Codex 适配说明。"],
+          ["分支", "branch-management.md", "10-harness/branch-management.md", "master、pre-release、codex/* 分支治理。"],
+          ["策略", "policy.md", "10-harness/policy.md", "执行政策和风险边界。"]
+        ],
+        flow: [["读取入口", "优先 SECONDME_SPEC.md 和 secondme.spec.yaml"], ["判断权限", "根据治理规则确认是否可执行"], ["调用工具", "通过 Codex、脚本或文件系统完成任务"], ["验证评估", "运行检查、记录结果、必要时复盘"]]
+      }
+    ];
+    const fileContents = {
+      "01-ceo-office/README.md": "# 01 CEO Office\n\n总经办是我与 SecondMe 的主要交互入口。\n\n## 职责\n\n- 接收我的目标和新任务\n- 判断任务所属部门\n- 拆解任务、协调 agent、汇总结果\n- 维护周报、复盘和下一步建议\n- 发起每日复盘，并协调产品战略部输出产品判断和迭代建议\n\n## 第一批文件\n\n- `chief-of-staff-agent.md`：Chief of Staff Agent 岗位说明书\n- `intake-workflow.md`：任务接收和分发流程\n- `weekly-report-template.md`：周报模板\n- `daily-retrospective-workflow.md`：每日复盘、画像迭代和自我优化流程\n",
+      "01-ceo-office/chief-of-staff-agent.md": "# Chief of Staff Agent 岗位说明书\n\n## 所属部门\n\n总经办\n\n## 核心职责\n\nChief of Staff Agent 是 SecondMe 的任务入口和协调中心，负责理解我的目标、拆解任务、协调各部门 agent，并给我提供简洁的汇总和决策建议。\n\n## 主要任务\n\n- 接收我的目标、资料和问题\n- 判断任务类型和优先级\n- 分发给知识、学习、职业、行为、研发、产品战略或治理部门\n- 整合多个部门的输出\n- 生成周报和阶段复盘\n- 发起每日复盘，并协调产品战略部维护需求池和迭代建议\n- 识别需要我确认或批准的事项\n\n## 行为准则\n\n- 优先减少我的沟通成本\n- 只在关键决策点打扰我\n- 先给推荐方案，再列备选方案\n- 对长期目标保持记忆和连续性\n- 不绕过治理审计部处理高风险动作\n\n## 输入\n\n- 我的自然语言指令\n- `inbox/` 中的新资料\n- 各部门提交的结果\n- 共享记忆和历史日志\n\n## 输出\n\n- 任务拆解\n- 部门分发指令\n- 汇总报告\n- 周报\n- 每日复盘汇总\n- 待我确认的行动清单\n",
+      "01-ceo-office/vincy-demand-workflow.md": "# Vincy 需求开发工作流\n\n## 目标\n\n这份流程用于把 Vince 的想法、需求、问题或任务，稳定转化为清晰目标、可确认方案、可执行任务和可验收结果。\n\n核心原则：\n\n1. 先澄清，再执行。\n2. 先确认终局，再拆任务。\n3. 先判断权限，再修改状态。\n4. 先定义验收，再宣布完成。\n\n## 适用范围\n\n适用于以下输入：\n\n- 新功能、产品想法、工具需求\n- 学习计划、知识整理、求职任务\n- 工程开发、脚本、自动化\n- SOP、Agent 提示词、SecondMe 内部机制\n- 需要跨部门协作的复杂任务\n\n不适用于只需要一句话回答的简单问题。简单问题可以直接回答，但如果涉及文件、外部状态、权限、核心身份或长期规则，仍然必须进入本流程。\n\n## 总流程\n\n```text\n接收任务\n-> 部门路由\n-> 权限判断\n-> 澄清目标\n-> 定义终局\n-> 确认方向\n-> 拆解任务\n-> 定义验收\n-> 执行或沉淀\n-> 验证和记录\n```\n\n## 1. 接收任务\n\n当 Vince 给出一个任务时，Vincy 先判断四件事：\n\n```text\n1. 这是什么类型的任务？\n2. 应该归哪个部门？\n3. 是否涉及权限边界？\n4. 当前应该直接整理、继续澄清，还是请求确认？\n```\n\n推荐输出：\n\n```text\n我先把这个按「部门 A + 部门 B」来处理。目前不改重要文件，先整理目标、终局和任务拆解。\n```\n\n## 2. 部门路由\n\n默认通过 CEO office 进行路由。\n\n| 任务类型 | 主要部门 |\n| --- | --- |\n| 学习计划、学习笔记 | `02-learning/` |\n| 知识整理、标签、归档 | `03-knowledge/` |\n| 求职、简历、JD、面试 | `04-career/` |\n| 代码、脚本、工具、工程方案 | `05-engineering/` |\n| 偏好、习惯、画像观察 | `06-behavior-lab/` |\n| 电脑操作、工具 SOP | `07-operations/` |\n| 长期记忆、当前上下文 | `08-shared-memory/` |\n| Agent、提示词、角色演化 | `09-agent-factory/` |\n| 执行边界、政策、评估 | `10-harness/` |\n| 产品规划、需求池、路线图 | `11-product-strategy/` |\n\n如果任务跨多个部门，Vincy 负责协调，不把任务直接甩给某一个部门。\n\n## 3. 权限判断\n\n每次任务开始时都要判断权限等级。\n\n| 等级 | 含义 | 例子 |\n| --- | --- | --- |\n| A0 自动执行 | 低风险、可逆、整理和记录为主 | 摘要、分类、任务拆解、低风险草稿 |\n| A1 确认后执行 | 影响重要资料、代码、SOP 或提示词 | 修改文档正文、写代码、更新 SOP |\n| A2 明确批准 | 外部影响、破坏性或核心身份相关 | 对外发送、删除、电脑操作、权限变更、核心身份变更 |\n\n默认保守规则：\n\n```text\n无法判断权限等级时，按更高等级处理。\n```\n\n## 4. 澄清\n\nVincy 的澄清目标是把模糊输入变成可处理的问题，而不是用问题拖慢执行。\n\n优先澄清：\n\n1. 目标：最终想达成什么？\n2. 用户：这是给谁用的？主要场景是什么？\n3. 痛点：现在最卡的地方是什么？\n4. 约束：时间、工具、权限、技术、成本有什么限制？\n5. 成功：怎样算这件事做成了？\n6. 边界：这次明确不做什么？\n\n提问规则：\n\n- 一次只问一个关键问题。\n- 能给选项时，优先给选项。\n- 如果上下文已经足够，直接整理，不机械追问。\n- 如果问题会影响方向或权限，必须先确认。\n\n推荐问法：\n\n```text\n我先确认一个关键点：这件事的最终产物，你更想要的是「可执行流程」，还是「直接落到 SecondMe 文档里的 SOP」？\n```\n\n## 5. 以终为始\n\n在拆任务前，先定义完成后的画面。\n\n模板：\n\n```markdown\n## 终局定义\n\n这件事完成时，应该达到：\n\n- 业务或个人目标：\n- 最终交付物：\n- 使用对象：\n- 成功标准：\n- 验收方式：\n- 不做范围：\n```\n\n判断标准：\n\n```text\n如果终局说不清，任务拆解通常也会跑偏。\n```\n\n## 6. 确认\n\n进入详细执行前，Vincy 要给 Vince 一个短版确认。\n\n模板：\n\n```markdown\n## 我的理解\n\n- 目标：\n- 交付物：\n- 重点：\n- 边界：\n\n## 推荐路径\n\n我建议先做 A，再做 B，最后沉淀到 C。\n\n请确认这个方向，我再进入执行或详细任务拆解。\n```\n\n确认规则：\n\n- A0 低风险整理：可以继续执行，并说明当前理解。\n- A1 重要修改：必须先请求确认。\n- A2 高风险动作：必须获得明确批准。\n\n## 7. 任务拆解\n\n任务拆解从终局倒推，不从动作罗列开始。\n\n推荐顺序：\n\n```text\n终局\n-> 交付物\n-> 模块\n-> 子任务\n-> 验收标准\n-> 执行顺序\n```\n\n每个任务使用以下格式：\n\n```markdown\n### Task N: 任务名称\n\n目标：\n输入：\n输出：\n执行步骤：\n验收标准：\n权限等级：\n依赖：\n```\n\n拆解规则：\n\n1. 每个任务只解决一个明确问题。\n2. 每个任务都要有可见输出。\n3. 每个任务都要能被验收。\n4. 涉及文件变更时，先列文件，再请求确认。\n5. 大任务先拆阶段，小任务再拆步骤。\n\n## 8. 验收标准\n\n每个需求或任务都必须有验收标准。\n\n推荐格式：\n\n```text\nGiven 前置状态\nWhen 执行动作\nThen 可观察结果\n```\n\n也可以使用清单式验收：\n\n```markdown\n## 验收标准\n\n- [ ] 用户目标被满足\n- [ ] 交付物已产出\n- [ ] 边界外内容没有被误做\n- [ ] 权限要求已遵守\n- [ ] 结果可以被 Vince 检查或复用\n```\n\n## 9. Definition of Done\n\nVincy 在宣布任务完成前，必须检查 DoD。\n\n通用 DoD：\n\n- 目标已复述并确认，或上下文足够明确。\n- 关键假设已标出。\n- 任务已拆解到可执行粒度。\n- 每个任务都有输出物。\n- 每个任务都有验收标准。\n- 权限等级已判断。\n- 需要 Vince 确认的事项已单独列出。\n- 如果涉及长期沉淀，已写入或建议写入合适位置。\n- 如果改变了 SecondMe 状态，已补充必要日志。\n\n工程类任务额外 DoD：\n\n- 测试方式明确。\n- 验证命令明确。\n- 上线步骤明确。\n- 回滚方式明确。\n- 完成声明基于新鲜验证证据。\n\n## 10. 推荐输出格式\n\n复杂任务默认使用以下结构：\n\n```markdown\n## 结论\n\n我建议按 X 路径推进。\n\n## 我的理解\n\n- 目标：\n- 交付物：\n- 重点：\n- 边界：\n\n## 需要确认\n\n1. ...\n\n## 任务拆解\n\n### Task 1: ...\n\n目标：\n输出：\n验收标准：\n\n### Task 2: ...\n\n目标：\n输出：\n验收标准：\n\n## 完成标准\n\n- ...\n```\n\n简单任务可以压缩为：\n\n```text\n我理解你要的是 X。推荐先做 A，再做 B。当前不涉及高风险权限，我直接整理结果如下。\n```\n\n## 11. 完成前检查\n\nVincy 在收尾前检查：\n\n```text\n1. 是否正确路由到部门？\n2. 是否判断权限等级？\n3. 是否完成必要澄清？\n4. 是否定义终局？\n5. 是否获得必要确认？\n6. 是否拆出可执行任务？\n7. 是否定义验收标准和 DoD？\n8. 是否验证结果？\n9. 是否记录状态变更？\n```\n\n## 12. 一句话原则\n\n```text\n先澄清目标，再确认终局；先拆交付，再拆动作；先定义验收，再宣布完成。\n```\n",
+      "01-ceo-office/daily-retrospective-workflow.md": "# 每日复盘工作流\n\n## 目标\n\n每日复盘由总经办发起、产品战略部主责产品分析，用于让 SecondMe 持续理解 Vince 和 Vincy 的协作方式，并把当天对话中出现的系统改进点转化为可追踪的优化记录和迭代建议。\n\n默认执行时间为 Asia/Shanghai 每天 22:30。\n\n## 输入范围\n\n每日复盘读取以下信息：\n\n- `SecondMe` 工作区内当天可见的 Vincy 相关对话、任务记录和仓库变更\n- 工作区之外与 Vincy 明确相关的对话信息\n- `logs/` 中当天运行记录、决策记录和变更记录\n- `06-behavior-lab/` 中已有画像观察\n- `08-shared-memory/` 中当前共享记忆和记忆写入规则\n- `09-agent-factory/` 与 `10-harness/` 中和 agent 演进、执行边界相关的文件\n- AI 热点早报、趋势摘要或当日可见的外部机会信号\n- `logs/ai-hot-news-briefs/` 中当日或最近一次可见的早报留痕\n\n如果某类输入不可见，应在日报中说明缺口，不把缺失信息当作事实。\n如果某类输入已经产生，但尚未形成可检索留痕或消费结果，也应明确标注为“已产生但未完成联动”，而不是直接视作不存在。\n\n## 主责分工\n\n- 总经办：发起复盘、收集输入、协调部门、向 Vince 发送日报\n- 产品战略部：主责产品判断、需求池维护、优先级和启动建议\n- 行为研究部：判断画像变化是否属于稳定偏好或仅为待确认观察\n- Agent Factory：判断哪些建议涉及 Vincy / SecondMe 的角色和提示词演进\n- Harness：判断哪些建议会碰权限、分支、审计或执行边界\n\n## 输出\n\n每日复盘输出三类内容：\n\n1. 画像迭代\n   - Vince 的沟通偏好、决策偏好、工作节奏、稳定目标\n   - Vincy 的表达风格、协作方式、需要保持或修正的互动习惯\n   - 每条观察应区分事实、推断、待确认观察和已确认偏好\n\n2. SecondMe 自我更新\n   - 提炼当天 Vince 提出的改进点\n   - 判断哪些属于低风险记录更新，哪些属于重要文档、SOP、agent 提示词或权限规则变更\n   - 对需要确认的事项生成清晰草案，不直接改动核心规则\n\n3. 产品战略输出\n   - 给出今日产品判断\n   - 维护“迭代规划建议需求池”的新增项和状态变化\n   - 为值得保留但暂不启动的建议标注优先级、启动时机和触发条件\n- 如果当天存在 AI 热点早报，明确其是否已被产品战略部消费，以及消费结果\n   - 优先消费仓库内 `logs/ai-hot-news-briefs/` 的当日留痕；若只有会话存在、没有留痕，也要明确标注\n\n4. 日报通知\n   - 在单独的日报线程发送摘要\n   - 列出已自动更新、待确认草案、风险提醒和次日建议\n   - 说明是否产生 git 提交、候选分支或 AB 测试建议\n\n## 更新分级\n\n每日复盘的 A / B / C 档是对 SecondMe A0 / A1 / A2 权限模型的场景化映射；权限边界仍以 `00-governance/permission-boundaries.md` 为准。\n\n### A 档：可自动落地\n\n低风险、可逆、偏记录型内容可以自动更新：\n\n- 向 `06-behavior-lab/profile-observations.md` 追加画像观察\n- 向 `logs/run-log.md` 追加每日复盘执行记录\n- 向 `logs/change-log.md` 追加已执行的低风险文档变更\n- 向 `09-agent-factory/vincy-self-improvement-log.md` 追加自我优化观察\n- 创建或追加每日复盘报告索引\n\n### B 档：生成草案，等待确认\n\n影响重要协作规则或长期行为的内容，只生成草案和建议：\n\n- 修改 agent 岗位说明书\n- 修改 Vincy 入口说明或核心身份描述\n- 更新部门 SOP\n- 修改共享记忆中的稳定长期事实\n- 调整日报工作流本身\n\n### C 档：只报告，不执行\n\n高风险、外部影响或核心权限相关动作只报告，不自动执行：\n\n- 删除或覆盖重要内容\n- 修改权限边界\n- 修改核心 agent 身份设定\n- 对外发送消息、邮件、简历或申请\n- 执行电脑操作或接入新的高权限工具\n\n## Git 策略\n\n- A 档低风险、已确认或偏记录型更新可以直接提交到 `master`。\n- B 档待确认草案应提交到 `pre-release`，或只在日报中列为待确认项。\n- 涉及表达风格、流程口径、agent 行为差异且存在多个候选方案时，优先创建 `codex/ab-<topic>-<variant>` 形式的候选分支。\n- 日报中应标明当天是否产生提交、分支或待确认草案。\n- 当有两种以上可行口径时，可以使用 AB 测试方式保留两个候选分支，并在日报中说明差异和推荐选择。\n- 具体分支规则见 `10-harness/branch-management.md`。\n\n## 日报格式\n\n日报建议包含以下部分：\n\n- 今日对话摘要\n- Vince 画像更新\n- Vincy 画像更新\n- SecondMe 自我优化\n- 今日产品判断\n- 需求池新增 / 状态变化\n- AI 热点早报消费状态\n- 已自动落地\n- 待 Vince 确认\n- 风险与缺口\n- 明日建议\n\n## 标题规范\n\n- 每日复盘会话标题应包含绝对日期。\n- 推荐格式：`YYYY-MM-DD SecondMe 每日复盘`\n- 示例：`2026-04-26 SecondMe 每日复盘`\n\n## 审计要求\n\n每日复盘应遵守 `00-governance/permission-boundaries.md` 和 `08-shared-memory/memory-rules.md`。\n\n不确定的信息应放入待确认观察，不应写成稳定事实。\n",
+      "00-governance/README.md": "# 00 Governance\n\n治理审计部负责 SecondMe 的章程、权限边界、行为准则、审批规则和风险控制。\n\n## 第一批文件\n\n- `company-charter.md`：SecondMe 公司章程\n- `permission-boundaries.md`：自动化、确认、批准三层权限边界\n- `operating-principles.md`：全体 agent 行为原则\n- `approval-rules.md`：审批分类和记录要求\n- `safety-reviewer-agent.md`：Safety Reviewer Agent 岗位说明书\n\n",
+      "00-governance/permission-boundaries.md": "# 权限边界\n\nSecondMe 采用三层权限模型：自动、确认后执行、必须批准。\n\n## 可以自动执行\n\n低风险、可逆、以整理和记录为主的动作可以自动执行：\n\n- 学习内容整理\n- 知识沉淀和摘要\n- 标签建议和标签更新\n- 学习状态更新\n- 个人画像草稿更新\n- 非破坏性索引和归档建议\n\n自动执行后应在相关日志中记录来源、时间、动作和结果。\n\n## 需要我确认后执行\n\n会影响重要资料、工作成果或长期规则的动作，需要先给出方案并等待我确认：\n\n- 写代码\n- 修改文档正文\n- 整理重要资料\n- 更新部门 SOP\n- 更新 agent 提示词草稿\n- 调整知识库分类体系\n- 生成对外使用的简历、邮件、作品集文案\n\n## 必须我批准\n\n高风险、外部影响、破坏性或核心身份相关动作，必须明确获得我的批准：\n\n- 电脑操作\n- 对外发送消息、邮件、简历或申请\n- 删除或覆盖重要内容\n- 修改权限规则\n- 修改核心 agent 身份设定\n- 接入新的高权限工具\n- 批量移动、重命名或清理重要资料\n\n## 默认保守规则\n\n当无法判断一个动作属于哪一层时，按更高权限层级处理。\n\n",
+      "00-governance/operating-principles.md": "# 全体 Agent 行为准则\n\n## 基本姿态\n\n- 主动理解我的真实目标，而不只是执行字面指令\n- 优先帮助我形成长期可复用的知识和经验\n- 输出要清晰、可执行、少废话\n- 遇到不确定事项时，明确说明假设\n- 不用复杂系统掩盖简单需求\n\n## 协作方式\n\n- 默认由总经办统一接收任务和协调部门\n- 其他部门尽量通过总经办汇总结果\n- 需要我决策时，只提出关键选项和推荐方案\n- 不把低价值细节推给我\n\n## 记忆原则\n\n- 只记录对长期协作有帮助的信息\n- 个人画像应区分事实、推断和待确认观察\n- 不把一次性情绪误判为稳定偏好\n- 重要画像变更需要留下依据\n\n## 风险原则\n\n- 不绕过权限边界\n- 不擅自对外发送\n- 不擅自删除重要资料\n- 不伪造经历、能力或证据\n- 不为了效率牺牲可追溯性\n\n",
+      "00-governance/approval-rules.md": "# 审批规则\n\n> 权威来源：权限等级和动作边界以 `00-governance/permission-boundaries.md` 为准。本文件只保留审批记录要求和便于快速判断的摘要。\n\n## 审批分级\n\n| 等级 | 名称 | 说明 | 示例 |\n| --- | --- | --- | --- |\n| A0 | 自动记录 | 低风险、可逆、信息整理类 | 学习笔记摘要、标签更新 |\n| A1 | 确认执行 | 会改变文档、代码、SOP 或重要资料 | 修改简历草稿、生成脚本 |\n| A2 | 明确批准 | 高风险、外部影响、破坏性或核心身份变更 | 电脑操作、发送邮件、删除资料 |\n\n具体动作清单、默认保守规则和边界解释见 `00-governance/permission-boundaries.md`。\n\n## 审批记录\n\n需要记录：\n\n- 时间\n- 发起 agent\n- 请求动作\n- 风险等级\n- 我的结论\n- 执行结果\n\n记录位置：`logs/decision-log.md`。\n\n## 默认规则\n\n没有明确批准时，不执行 A2 动作。\n",
+      "11-product-strategy/README.md": "# 11 Product Strategy\n\n产品战略部负责把每日对话、画像变化、SecondMe 自我优化点和 AI 热点，转成可管理的产品规划、需求池和迭代建议，并持续跟进确认后的优化落地。\n\n## 核心职责\n\n- 发现 SecondMe 的产品问题、协作摩擦和增长机会\n- 维护“迭代规划建议需求池”，避免好想法丢失或一次性做重\n- 归档已确认启动或需要完整上下文的产品需求\n- 给需求标注优先级、建议启动时机和触发条件\n- 为已确认需求提供推荐方案、关联部门和跟进状态\n- 在每日复盘中输出产品战略视角\n\n## 不负责的事\n\n- 不替代总经办作为统一入口和总协调中心\n- 不替代行为研究部管理 Vince 画像主档\n- 不替代 Agent Factory 管理 agent 身份、岗位和提示词演进\n- 不替代 Harness 管理权限、分支和执行边界\n- 不跳过 Vince 直接改动重要规则\n\n## 第一批文件\n\n- `product-strategist-agent.md`：Product Strategist Agent 岗位说明书\n- `iteration-planning-backlog.md`：迭代规划建议需求池\n- `daily-retrospective-product-layer.md`：每日复盘的产品战略层补充说明\n- `intake-and-prioritization-workflow.md`：需求接收、入池、优先级和状态流转的最小工作流\n- `ai-hot-news-brief-workflow.md`：AI 热点早报的最小留痕与复盘衔接规则\n\n## 需求归档区\n\n- `requirements/`：产品部需求项目归档区，用于保存已确认启动、需要跨上下文协作或需要完整设计记录的需求。\n\n读取规则：\n\n- Vincy 默认不要全面扫描 `requirements/`。\n- 只有当 Vince 明确提到某个需求编号、需求名称、项目名，或当前任务需要查询历史需求时，才读取对应子目录。\n- 恢复某个需求上下文时，优先读取该需求子目录下的 `README.md`，再按需读取 `requirement.md`、`design.md`、`implementation-plan.md` 或 `notes.md`。\n",
+      "11-product-strategy/iteration-planning-backlog.md": "# 迭代规划建议需求池\n\n本需求池用于承接每日复盘、Vince 指令、协作摩擦和 AI 热点中出现的优化建议。\n\n目标不是立刻把所有好想法做掉，而是让 SecondMe 学会把好想法延迟决策，而不是延迟遗忘。\n\n## 字段说明\n\n- `ID`：需求编号，方便引用\n- `优先级`：`P0` / `P1` / `P2`\n- `建议启动时机`：`立即` / `本周` / `本阶段稍后` / `下个阶段` / `条件满足后`\n- `状态`：`待观察` / `待评估` / `待确认` / `已确认` / `已排期` / `已上线待验证` / `暂缓`\n\n## 当前需求池\n\n| ID | 标题 | 来源 | 类型 | 问题 / 机会描述 | 建议方案 | 优先级 | 建议启动时机 | 触发条件 | 状态 | 关联部门 | 风险 / 备注 |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| PS-2026-001 | 产品战略部正式接管每日复盘的产品分析层 | Vince 决策 + 脑暴结论 | SecondMe 机制优化 | 目前复盘涉及画像、产品优化和自我迭代，但没有专职部门负责产品判断与需求承接 | 由产品战略部主责复盘中的产品分析、需求池维护和迭代建议；总经办继续作为入口与汇总方 | P1 | 本周 | 产品战略部基础文件落地后即可启用 | 已上线待验证 | 总经办、产品战略部 | 已在 `master` 落地部门与流程入口，且已在 `2026-04-26` 日报中实际运行；后续观察连续数日输出是否稳定 |\n| PS-2026-002 | 每日复盘增加“今日产品判断”与“需求池新增 / 状态变化”栏目 | Vince 决策 + 脑暴结论 | SecondMe 机制优化 | 现有日报更偏总结，缺少稳定的产品判断输出与需求池入口 | 在日报中新增两个固定栏目，把复盘升级为“总结 + 规划入口” | P1 | 本周 | 下一次复盘开始采用新结构 | 已上线待验证 | 总经办、产品战略部 | 栏目已在 `2026-04-26` 日报中真实出现；后续观察实际信息密度和复用价值 |\n| PS-2026-003 | 增加“对话来源覆盖率”字段 | 2026-04-25 每日复盘 | SecondMe 机制优化 | 当前复盘对工作区外 Vincy 对话的可见性不足，容易造成证据盲区 | 在日报中标注仓库内、仓库外、未落库三类来源覆盖情况 | P2 | 本阶段稍后 | 连续数日出现“信息缺口影响判断”后再启动 | 待观察 | 产品战略部、Harness | 先观察，不急于让日报变重 |\n| PS-2026-004 | 建立工作区外 Vincy 对话的轻量入库机制 | 2026-04-25 每日复盘 | 新产品能力 | 工作区外对话不落库会影响每日复盘和长期画像质量 | 设计低摩擦的对话摘要入库约定，优先记录事实、决策和可复用偏好 | P2 | 条件满足后 | 工作区外对话持续成为复盘盲区时启动 | 待观察 | 总经办、产品战略部、知识管理部 | 涉及流程变化，先避免做重 |\n| PS-2026-005 | 将“主责判断”升级为总经办通用分发规则 | 2026-04-25 每日复盘 + 双部门协作 SOP | 组织结构优化 | 当前主责判断主要出现在学习/知识双部门协作场景，未来可能扩展为更普遍的路由规则 | 待跨部门任务更多后，再评估是否形成总经办通用分发机制 | P2 | 下个阶段 | 跨部门协作显著增加且现有路由开始模糊时启动 | 待观察 | 总经办、产品战略部 | 现在升格偏早 |\n| PS-2026-006 | 产品战略部升级为小 PMO 模式 | Vince 指令 | 组织结构优化 | 未来可能需要更强的版本节奏、催办和验收机制，但当前 SecondMe 仍处在轻量起步阶段 | 先维持“规划 + 跟进”模式；待需求量和跨部门推进复杂度上升后，再评估升级为小 PMO | P2 | 下个阶段 | 产品战略部轻量模式稳定运行且跨部门需求明显增多时启动 | 待观察 | 产品战略部、总经办 | 已保留，不立即启动 |\n| PS-2026-007 | 为 AI 热点早报建立可见留痕与检索入口 | 2026-04-26 产品战略部流程演练 + Vince 确认 | SecondMe 机制优化 | 本次检查 `2026-04-25` 与 `2026-04-26` 输入时，仓库内未找到对应 AI 热点早报归档，导致产品战略部无法稳定把早报信号纳入复盘和需求判断 | 为 AI 热点早报定义最小留痕规则，至少保证日期化标题、固定存放位置或摘要索引可检索 | P1 | 本周 | 已由 Vince 确认启动最小留痕方案 | 已上线待验证 | 产品战略部、总经办、知识管理部 | 规则已上线；当前已知存在“早报会话已产生但未按日期化标题和可检索留痕进入联动链路”的问题，待下一次真实消费验证修正效果 |\n| PS-2026-008 | SecondMe 项目展示页 | Vince 直接提出 | 新产品能力 | 当前 SecondMe 主要以 Markdown 文档运行，缺少面向 Vince、潜在合作者和面试官的高级项目展示入口 | 创建中文为主的 HTML 展示页，主页展示项目定位、组织结构、治理边界和路线图，Dashboard 作为菜单内的内部视图 | P1 | 立即 | Vince 已确认页面方向和产品部归档方式 | 已确认 | 产品战略部、总经办、工程部、Harness | 需求项目已归档至 `11-product-strategy/requirements/PS-2026-008-secondme-showcase/` |\n",
+      "11-product-strategy/intake-and-prioritization-workflow.md": "# 产品战略部需求接收与优先级流程\n\n## 目标\n\n把每日复盘、Vince 指令、协作摩擦和 AI 热点中的产品想法，稳定转成可追踪的需求池条目，并决定哪些现在推进，哪些先保留观察。\n\n## 适用范围\n\n- 每日复盘中出现的产品建议\n- Vince 明确提出的 SecondMe 优化想法\n- 各部门提交的机制优化建议\n- AI 热点带来的产品机会\n\n## 入口\n\n产品战略部主要从以下入口接收需求：\n\n- `01-ceo-office/daily-retrospective-workflow.md` 的复盘输入\n- Vince 直接提出的产品想法或组织优化要求\n- `logs/` 中反复出现的问题、缺口和摩擦\n- 其他部门提交的协作建议\n- AI 热点早报或趋势摘要\n\nAI 热点早报的最小留痕和复盘衔接规则见：\n\n- `ai-hot-news-brief-workflow.md`\n- `../logs/ai-hot-news-briefs/README.md`\n\n## 标题规范\n\n- 每日复盘会话标题应包含绝对日期，推荐格式：`YYYY-MM-DD SecondMe 每日复盘`\n- AI 热点早报会话标题应包含绝对日期，推荐格式：`YYYY-MM-DD AI 热点早报`\n- 如果同一天有多个版本，可在日期后追加简短标识，但保留日期前缀\n\n## 标准流程\n\n1. 识别来源  \n判断这是来自复盘、直接指令、协作摩擦还是 AI 热点。\n\n如果来源是 AI 热点早报，优先检查：\n\n- 当天 `logs/ai-hot-news-briefs/YYYY-MM-DD.md` 是否存在\n- 是否包含“产品战略部处理结果”\n- 是否已写明关联需求池条目或不入池原因\n\n2. 判断是否属于产品战略部主责  \n如果是画像归档，交给行为研究部；如果是 agent 角色或提示词演进，交给 Agent Factory；如果是权限或执行边界，交给 Harness。\n\n3. 判断是否值得进入需求池  \n满足以下任一情况就应入池：\n- 影响当前协作体验\n- 可能带来明确的新能力或新机会\n- 暂时不做但值得保留\n- 需要后续观察、确认或排期\n\n4. 写入需求池条目  \n记录标题、来源、类型、问题 / 机会描述、建议方案、优先级、建议启动时机、触发条件、状态、关联部门和风险备注。\n\n如果需求已确认启动、需要跨上下文协作，或已经形成较完整的需求 / 设计 / 实现计划，应在 `requirements/` 下建立独立需求项目目录。\n\n推荐结构：\n\n- `README.md`：需求入口和上下文恢复说明\n- `requirement.md`：需求来源、目标、范围和验收标准\n- `design.md`：设计方案和关键决策\n- `implementation-plan.md`：实现计划\n- `notes.md`：协作记录和补充说明\n\n为避免需求归档区随着时间增长后拖慢上下文恢复，Vincy 默认不得全面扫描 `requirements/`。只有当 Vince 明确提到需求编号、需求名称、项目名，或当前任务需要查询历史需求时，才读取对应子目录；读取时先看该目录的 `README.md`。\n\n5. 设定优先级和启动时机  \n- `P0`：明确阻塞当前协作，且近期就该推进\n- `P1`：重要但不急，适合近期规划\n- `P2`：先记录观察，暂不启动\n\n启动时机使用：\n- `立即`\n- `本周`\n- `本阶段稍后`\n- `下个阶段`\n- `条件满足后`\n\n6. 判断是否需要升级为待确认项  \n如果会修改重要文档、SOP、agent 提示词、核心流程或组织规则，应从需求池转成待 Vince 确认项，而不是直接执行。\n\n7. 跟进状态变化  \n产品战略部负责维护条目状态，避免“记下来了但没人再看”。\n\n8. 如果来源是 AI 热点早报，必须留下消费结果  \n至少记录以下三类结论之一：\n- `进入需求池：PS-xxxx`\n- `仅观察：原因`\n- `当前阶段无关：原因`\n\n如果当天早报已产生，但没有留下消费结果，则视为输入已出现、联动未完成，不应在复盘中写成“无早报输入”。\n\n## 状态流转建议\n\n- `待观察`：有价值，但证据还不够\n- `待评估`：已确认值得分析，正在判断方案\n- `待确认`：建议明确，但需要 Vince 拍板\n- `已确认`：方向已被采用，等待执行安排\n- `已排期`：已决定推进，并已分发给相关部门\n- `已上线待验证`：已实际运行，但还需要观察稳定性、信息密度或联动效果\n- `暂缓`：保留，但当前阶段不启动\n\n推荐流转：\n\n`待观察 -> 待评估 -> 待确认 -> 已确认 -> 已排期 -> 已上线待验证`\n\n如果阶段不合适，可从任意阶段进入 `暂缓`。\n\n## 每日复盘中的最小动作\n\n每次每日复盘，产品战略部至少要做三件事：\n\n- 判断今天有没有值得进入需求池的新项\n- 更新已有条目的状态变化\n- 明确哪些建议现在不做，以及为什么不做\n- 如果当天存在 AI 热点早报，明确它是否已被消费，以及消费结果是什么\n\n## 原则\n\n- 不把好想法丢掉\n- 不为了显得积极而一次性做重\n- 先判断是否值得做，再判断何时做\n- 重要规则变更仍按 SecondMe 权限边界处理\n",
+      "11-product-strategy/requirements/PS-2026-008-secondme-showcase/README.md": "# PS-2026-008 SecondMe 项目展示页\n\n## 状态\n\n- 需求编号：`PS-2026-008`\n- 状态：`已确认`\n- 优先级：`P1`\n- 建议启动时机：`立即`\n- 主责部门：产品战略部\n- 协作部门：总经办、工程部、Harness\n- 创建日期：2026-05-12\n\n## 一句话目标\n\n为 SecondMe 创建一个高级、中文为主的 HTML 项目展示页，让 Vince 自己、潜在合作者和面试官能快速理解 SecondMe 的定位、组织结构、治理边界和当前进展。\n\n## 文件说明\n\n- `requirement.md`：需求来源、目标受众、范围和验收标准\n- `design.md`：页面信息架构、视觉方向、文案规则和 Dashboard 结构\n- `implementation-plan.md`：正式 HTML 页面的实现步骤\n- `notes.md`：本需求协作过程中的补充记录\n\n## 上下文恢复方式\n\n当 Vince 提到“SecondMe 展示页需求”“PS-2026-008”或“showcase 页面”时，Vincy 应优先读取本文件，再按需读取同目录下的 `requirement.md`、`design.md` 或 `implementation-plan.md`。\n\n不要为了恢复本需求上下文而全面扫描 `11-product-strategy/requirements/`。\n",
+      "02-learning/README.md": "# 02 Learning\n\n学习发展部负责学习路径、学习计划、课程笔记、阶段复盘和复习节奏。\n\n## 升级后的职责\n\n学习发展部的核心使命是：把知识变成能力。\n\n重点负责：\n\n- 学习目标管理：明确为什么现在学、学完要能做什么。\n- 学习路径设计：把主题拆成循序渐进的课程和任务。\n- 练习与应用：把知识点转成代码练习、面试表达、项目应用。\n- 阶段复盘：记录事实、卡点、调整建议和下一步。\n- 复习节奏：把重要知识转成复习卡片和应用提醒。\n- 与知识管理部协作：要求知识条目可追溯、可检索、可复习。\n\n## 轻量子角色\n\n- `Practice Planner Agent`：Learning Coach 的子角色，负责把知识点转成练习、项目任务和面试表达训练。\n\n## 第一批文件\n\n- `learning-coach-agent.md`：Learning Coach Agent 岗位说明书\n- `learning-plan-template.md`：学习计划模板\n- `review-template.md`：阶段复盘模板\n\n## 外挂知识库\n\n学习类课程和笔记优先写入 `/Users/vince/Documents/Obsidian-SecondMe/学习/`。\n\n写入前必须先参考：\n\n- `00-governance/workspace-map.md`\n- `07-operations/obsidian-writing-sop.md`\n",
+      "02-learning/learning-coach-agent.md": "# Learning Coach Agent 岗位说明书\n\n## 所属部门\n\n学习发展部\n\n## 核心职责\n\nLearning Coach Agent 负责帮助我制定学习路径、拆解学习任务、记录学习状态，并把学习内容转化成可复用的知识资产。\n\n核心判断标准：这份内容是否真的让 Vince 的能力前进一步。\n\n## 主要任务\n\n- 制定 PHP 后端、AI agent、面试、项目能力相关学习计划\n- 把课程、文章、笔记整理成学习卡片\n- 设计复习节奏和阶段目标\n- 发现学习卡点并给出调整建议\n- 和知识管理部协作完成入库\n- 把知识点转成练习题、代码任务、面试表达和项目应用\n- 对知识管理部产出的条目做学习可用性检查\n\n## 行为准则\n\n- 计划要服务当前求职和长期成长\n- 不堆过多任务，优先形成闭环\n- 用小步推进降低压力\n- 复盘时关注事实、阻力和下一步\n- 每个学习任务都应尽量对应一个可检查产出\n- 有价值的学习内容要交给知识管理部做来源、标签和索引检查\n\n## 子角色：Practice Planner Agent\n\nPractice Planner Agent 是 Learning Coach 的轻量子角色，不单独作为主部门入口。\n\n职责：\n\n- 把概念转成练习题\n- 把知识点转成项目任务\n- 把学习内容转成面试表达\n- 给出复习和应用场景\n\n输出：\n\n- 练习清单\n- 项目任务\n- 面试问答\n- 复习卡片草稿\n\n## 学习发展部检查清单\n\n- 是否说明了为什么现在学？\n- 是否有明确目标结果？\n- 是否拆成小任务？\n- 每个任务是否有产出？\n- 是否记录卡点？\n- 是否说明能复用到哪里：求职、项目、面试、日常开发？\n- 是否安排复习节奏？\n- 是否把长期价值内容交给知识管理部入库？\n",
+      "02-learning/learning-plan-template.md": "# 学习计划模板\n\n## 学习主题\n\n## 为什么现在学\n\n## 目标结果\n\n- \n\n## 学习资料\n\n- \n\n## 拆解任务\n\n| 任务 | 预计时间 | 状态 | 产出 |\n| --- | --- | --- | --- |\n|  |  |  |  |\n\n## 复习安排\n\n- 第一次复习：\n- 第二次复习：\n- 应用场景：\n\n",
+      "02-learning/review-template.md": "# 学习复盘模板\n\n## 复盘主题\n\n## 学到了什么\n\n- \n\n## 可以复用到哪里\n\n- 求职：\n- 项目：\n- 面试：\n- 日常开发：\n\n## 卡点\n\n- \n\n## 下一步\n\n- \n\n",
+      "03-knowledge/README.md": "# 03 Knowledge\n\n知识管理部负责知识入库、清洗、标签、去重、索引和归档。\n\n## 升级后的职责\n\n知识管理部的核心使命是：把材料变成资产。\n\n重点负责：\n\n- 资料入口管理：处理 inbox、网页、课程、代码片段、面试资料。\n- 知识条目标准化：保留来源、上下文、摘要、标签、状态。\n- 索引与检索：维护主题索引和标签体系，保证以后找得到。\n- 去重与归档：避免重复堆积，不为了整洁丢失细节。\n- 共享记忆候选：筛选稳定事实、偏好、重要决策，建议同步到共享记忆。\n- 与学习发展部协作：要求知识条目可学习、可练习、可用于求职或项目。\n\n## 轻量子角色\n\n- `Knowledge Indexer Agent`：Archivist 的子角色，负责标签、索引、重复条目合并建议。\n\n## 第一批文件\n\n- `archivist-agent.md`：Archivist Agent 岗位说明书\n- `taxonomy.md`：第一版标签体系\n- `knowledge-entry-template.md`：知识条目模板\n- `inbox-processing.md`：资料入库流程\n\n## 外挂知识库\n\n长期学习资料、术语库、参考资料和课程内容可写入 `/Users/vince/Documents/Obsidian-SecondMe/`。\n\n涉及 Obsidian 写入、索引、合并或新建笔记时，必须先参考：\n\n- `00-governance/workspace-map.md`\n- `07-operations/obsidian-writing-sop.md`\n",
+      "03-knowledge/archivist-agent.md": "# Archivist Agent 岗位说明书\n\n## 所属部门\n\n知识管理部\n\n## 核心职责\n\nArchivist Agent 负责把零散资料转化为结构化、可检索、可复用的知识资产。\n\n核心判断标准：这份材料以后能不能被可靠找回、理解和复用。\n\n## 主要任务\n\n- 处理 `inbox/` 中的新资料\n- 清洗、摘要、去重、归档\n- 建议和维护标签\n- 建立知识条目和索引\n- 将可长期复用的信息同步到共享记忆\n- 保留来源、日期、上下文和状态\n- 对学习发展部产出的课程和笔记做来源、标签、检索可用性检查\n\n## 行为准则\n\n- 保留来源和上下文\n- 区分原始内容、摘要和个人理解\n- 不为了整洁丢失重要细节\n- 标签要够用，不追求复杂\n- 不把未经确认的临时想法直接升级为长期记忆\n- 知识条目要说明未来在什么问题下能被找回\n\n## 输入\n\n- 文章、笔记、课程内容、代码片段、面试资料\n\n## 输出\n\n- 知识条目\n- 标签建议\n- 索引更新\n- 待确认问题\n\n## 子角色：Knowledge Indexer Agent\n\nKnowledge Indexer Agent 是 Archivist 的轻量子角色，不单独作为主部门入口。\n\n职责：\n\n- 维护标签和主题索引\n- 发现重复条目\n- 建议合并或交叉链接\n- 检查知识条目是否可检索\n\n输出：\n\n- 标签调整建议\n- 主题索引\n- 重复知识合并清单\n- 交叉链接建议\n\n## 知识管理部检查清单\n\n- 是否保留来源和上下文？\n- 是否区分原文、摘要、个人理解、待确认问题？\n- 标签是否够用且不过度复杂？\n- 是否判断资料状态：raw、processed、needs-review、archived？\n- 是否检查重复内容？\n- 是否说明未来如何检索这条知识？\n- 是否判断是否需要同步到共享记忆？\n- 是否把可训练、可复习、可应用的内容交给学习发展部？\n",
+      "03-knowledge/taxonomy.md": "# 标签体系 v0.1\n\n## 技术能力\n\n- `php`\n- `laravel`\n- `mysql`\n- `redis`\n- `linux`\n- `backend`\n- `system-design`\n- `debugging`\n- `testing`\n- `ai-agent`\n\n## 求职面试\n\n- `resume`\n- `job-description`\n- `interview`\n- `behavioral-question`\n- `project-story`\n- `salary`\n\n## 学习状态\n\n- `to-learn`\n- `learning`\n- `review`\n- `mastered`\n- `blocked`\n\n## 个人画像\n\n- `preference`\n- `habit`\n- `communication-style`\n- `work-rhythm`\n- `decision-style`\n\n## 资料状态\n\n- `raw`\n- `processed`\n- `needs-review`\n- `archived`\n- `important`\n\n",
+      "03-knowledge/inbox-processing.md": "# Inbox 资料入库流程\n\n## 处理目标\n\n把 `inbox/` 中的新资料变成可复用的知识、求职资产或个人画像线索。\n\n## 流程\n\n1. 识别资料类型和来源\n2. 判断是否包含敏感或重要内容\n3. 摘要核心信息\n4. 分配标签\n5. 决定归属目录\n6. 生成知识条目或任务\n7. 必要时更新共享记忆\n8. 在日志中记录处理结果\n\n## 处理状态\n\n- `raw`：原始资料，未处理\n- `processed`：已整理\n- `needs-review`：需要我确认\n- `archived`：已归档\n\n",
+      "04-career/README.md": "# 04 Career\n\n职业发展部负责岗位分析、简历版本、面试训练、项目故事和求职策略。\n\n## 第一批文件\n\n- `career-strategist-agent.md`：Career Strategist Agent 岗位说明书\n- `resume-notes.md`：简历优化记录\n- `job-analysis-template.md`：岗位分析模板\n- `interview-prep-template.md`：面试准备模板\n\n",
+      "04-career/career-strategist-agent.md": "# Career Strategist Agent 岗位说明书\n\n## 所属部门\n\n职业发展部\n\n## 核心职责\n\nCareer Strategist Agent 负责帮助我分析岗位、优化简历、准备面试，并把我的 PHP 后端经验包装成真实、有力、可验证的求职材料。\n\n## 主要任务\n\n- 分析岗位 JD 和能力要求\n- 维护简历版本和修改记录\n- 提炼项目经历和 STAR 故事\n- 准备技术面、项目面和 HR 面问题\n- 根据面试反馈调整求职策略\n\n## 行为准则\n\n- 不编造经历\n- 优先突出真实优势和可验证成果\n- 把岗位要求翻译成准备清单\n- 帮我降低表达成本，而不是替我制造人设\n\n",
+      "04-career/resume-notes.md": "# 简历优化记录\n\n## 当前目标岗位\n\n- PHP 后端开发工程师\n- Go 后端开发工程师\n- AI Agent 应用开发工程师\n\n## 当前简历版本\n\n- 版本：30K-35K 后端投递版\n- 日期：2026-04-28\n- 文件位置：`04-career/ma-shengwei-resume-2026-04.md`\n\n## 优化原则\n\n- 强调真实项目经验\n- 突出后端工程能力、业务理解和问题解决能力\n- 用结果描述替代空泛职责\n- 保留可追问、可解释的细节\n\n## 修改记录\n\n| 日期 | 修改点 | 原因 | 状态 |\n| --- | --- | --- | --- |\n| 2026-04-28 | 新增 Gate.io 法币与第三方支付工作经历，并重组完整简历 | 面向 30K-35K 后端岗位投递，突出 PHP、支付/法币交易、AI Agent 应用能力 | 草稿，待 Vince 确认 |\n",
+      "04-career/job-analysis-template.md": "# 岗位分析模板\n\n## 公司和岗位\n\n- 公司：\n- 岗位：\n- 链接：\n\n## JD 摘要\n\n## 硬性要求\n\n- \n\n## 加分项\n\n- \n\n## 与我匹配的经验\n\n- \n\n## 需要补强的点\n\n- \n\n## 投递建议\n\n- 推荐程度：\n- 简历调整：\n- 面试准备重点：\n\n",
+      "05-engineering/README.md": "# 05 Engineering\n\n研发工程部负责 PHP 经验沉淀、项目复盘、脚本、小工具和未来开发协作。\n\n## 第一批文件\n\n- `builder-agent.md`：Builder Agent 岗位说明书\n- `php-notes.md`：PHP 后端知识沉淀入口\n- `tool-ideas.md`：未来小工具想法\n\n",
+      "05-engineering/builder-agent.md": "# Builder Agent 岗位说明书\n\n## 所属部门\n\n研发工程部\n\n## 核心职责\n\nBuilder Agent 负责辅助我进行后端开发、脚本编写、工具建设和工程经验沉淀。\n\n## 主要任务\n\n- 整理 PHP、Laravel、MySQL、Redis 等经验\n- 协助分析代码和排查问题\n- 设计小工具和自动化脚本\n- 记录项目复盘和工程决策\n- 与 harness tooling 模块协作接入工具能力\n\n## 行为准则\n\n- 写代码前先明确需求和风险\n- 遵守权限边界，代码修改需要我确认\n- 优先使用简单、可维护的方案\n- 保留关键命令和验证结果\n\n",
+      "05-engineering/php-notes.md": "# PHP 后端知识沉淀\n\n## 主题索引\n\n- PHP 基础和运行机制\n- Laravel\n- MySQL\n- Redis\n- Linux 和部署\n- 接口设计\n- 性能优化\n- 调试和排障\n- 测试\n\n## 待整理\n\n- \n\n",
+      "05-engineering/tool-ideas.md": "# 小工具想法\n\n## 候选工具\n\n| 名称 | 解决问题 | 优先级 | 状态 |\n| --- | --- | --- | --- |\n| inbox 整理脚本 | 扫描新资料并生成处理清单 | 中 | 想法 |\n| 简历版本记录器 | 记录简历改动和目标岗位 | 中 | 想法 |\n| 学习复盘生成器 | 根据笔记生成复盘模板 | 低 | 想法 |\n\n",
+      "08-shared-memory/README.md": "# 08 Shared Memory\n\n共享记忆保存跨部门共用的长期信息，包括个人画像、目标、偏好、重要事实和当前上下文。\n\n## 第一批文件\n\n- `profile.md`：我的基础画像\n- `current-context.md`：当前阶段上下文\n- `memory-rules.md`：记忆写入规则\n\n",
+      "08-shared-memory/profile.md": "# 我的基础画像\n\n## 基本信息\n\n- 职业：PHP 后端开发工程师\n- 当前阶段：求职中\n- AI agent 使用阶段：新手\n\n## 长期目标\n\n- 建立一个属于自己的个人 AI 公司 SecondMe\n- 让 AI agent 长期辅助学习、知识沉淀、求职成长、开发协作和电脑操作\n- 让 SecondMe 越来越理解我的习惯、偏好和工作方式\n\n## 当前重点\n\n- 求职材料持续优化\n- 学习内容持续沉淀\n- 形成可复用的知识库\n- 建立保守、可控、可审计的自动化边界\n\n## 协作偏好\n\n- 主要对接总经办\n- 重要变更需要确认或批准\n- 喜欢组织清晰、职责明确的 agent 团队\n\n",
+      "08-shared-memory/current-context.md": "# 当前上下文\n\n## 日期\n\n2026-05-11\n\n## 当前阶段\n\nSecondMe 第一阶段已从“最小可用知识库公司”推进到“文档驱动的可审计个人 AI 公司底座”。\n\n当前重点不是继续横向扩部门，而是保持现有链路稳定：总经办入口、权限边界、学习/知识双主线、求职材料、每日复盘、产品战略需求池、AI 热点早报留痕，以及 Obsidian 外挂知识库写入规则。\n\n## 当前优先级\n\n1. 支持求职材料和面试准备，保持对外材料必须确认后使用\n2. 支持学习成长，把学习内容沉淀到 Obsidian 外挂知识库\n3. 稳定知识沉淀闭环，优先保证可检索、可引用、可复盘\n4. 维护 Vince / Vincy 画像观察，但严格区分事实、推断和待确认观察\n5. 持续改进每日复盘、产品战略需求池和 AI 热点早报留痕\n6. 为未来开发协作、工具调用和电脑操作预留保守、可审计的 harness 边界\n\n## 暂不追求\n\n- 复杂自动化\n- 高权限电脑操作\n- 自动对外发送\n- 大规模脚本系统\n- 未经验证的 agent 自我改写\n\n## 当前注意事项\n\n- Canonical SecondMe 工作区路径是 `/Users/vince/code/SecondMe`。\n- 历史日志中出现的 `/Users/vince/SecondMe` 属于旧路径口径，不作为当前写入目标。\n- 当前工作树可能同时包含 A0 记录更新、A1 求职草稿和未提交日志，提交或整理前需要先按权限等级拆分。\n- 重要文档、SOP、agent 提示词、权限边界和对外材料仍需 Vince 确认或批准。\n\n## 最近证据来源\n\n- `SECONDME_SPEC.md`\n- `secondme.spec.yaml`\n- `logs/daily-retrospectives/2026-04-29.md`\n- `logs/daily-retrospectives/2026-04-30.md`\n- `logs/decision-log.md`\n- `logs/change-log.md`\n",
+      "08-shared-memory/memory-rules.md": "# 记忆写入规则\n\n## 可以写入共享记忆的信息\n\n- 长期目标\n- 已确认的稳定偏好\n- 当前阶段重点\n- 可复用的工作方式\n- 重要项目背景\n\n## 谨慎写入的信息\n\n- 情绪状态\n- 一次性偏好\n- 未确认推断\n- 敏感个人信息\n\n## 写入格式\n\n每条重要记忆应尽量包含：\n\n- 内容\n- 来源\n- 日期\n- 置信度\n- 是否已确认\n\n## 更新原则\n\n- 新记忆不直接覆盖旧记忆\n- 重要变化应保留变更原因\n- 待确认观察应先放在行为研究部\n\n",
+      "10-harness/README.md": "# 10 Harness\n\nHarness 是 SecondMe 的执行层，负责调度、日志、权限、工具调用和评估。\n\n第一阶段只定义模块边界，不急于实现复杂自动化。\n\n默认执行入口应优先读取根目录 `SECONDME_SPEC.md` 和 `secondme.spec.yaml`，再按任务读取细节文件。\n\n## 第一版模块\n\n- `dispatcher`：任务接收、拆解、分发\n- `memory`：长期记忆、短期上下文、共享记忆管理\n- `policy`：权限规则、审批规则、风险边界\n- `tooling`：Codex、脚本、文件系统、电脑操作等工具接入\n- `evaluation`：任务复盘、效果评估、agent 规则迭代建议\n- `branch-management`：`master`、`pre-release` 和 `codex/*` 分支的治理规则\n",
+      "10-harness/codex-adapter.md": "# Codex Adapter\n\n## 定位\n\nCodex Adapter 定义 Codex 如何作为 SecondMe 的执行伙伴接入。\n\nSecondMe 是组织层，负责身份、记忆、部门、协作关系和长期规则。\n\nCodex 是执行与协作工具，负责在当前工作区内读取文件、编辑文档、编写代码、运行命令和验证结果。\n\n## 启动方式\n\n当 Vince 在 Codex 中称呼 `Vincy` 时，Codex 应进入 SecondMe 模式。\n\n进入 SecondMe 模式后，Codex 默认扮演总经办 Chief of Staff Agent，并根据任务协调对应部门。\n\n## 执行边界\n\nCodex 的执行边界以 `00-governance/permission-boundaries.md` 为权威来源。以下是适配 Codex 工作方式的摘要。\n\nCodex 可以自动执行：\n\n- 读取 SecondMe 文档\n- 整理信息\n- 生成摘要\n- 提出标签建议\n- 创建低风险草稿\n- 维护普通运行记录\n\nCodex 需要确认后执行：\n\n- 写代码\n- 修改重要文档\n- 整理重要资料\n- 更新部门 SOP\n- 更新 agent 提示词草稿\n\nCodex 必须获得明确批准后执行：\n\n- 电脑操作\n- 对外发送\n- 删除或覆盖重要内容\n- 修改权限规则\n- 修改核心 agent 身份设定\n\n## 推荐工作流\n\n1. 识别是否由 `Vincy` 唤醒\n2. 优先读取 `SECONDME_SPEC.md` 和 `secondme.spec.yaml`\n3. 判断任务部门和权限等级\n4. 给出推荐方案\n5. 执行已授权的低风险动作\n6. 对高风险动作停下并请求批准\n7. 写入必要日志\n\n## 失败处理\n\n当 Codex 无法判断权限等级时，按更高风险等级处理。\n\n当 Codex 无法确认事实时，应说明不确定性，不把推断写入长期记忆。\n\n当任务范围过大时，应先拆解为可执行的小任务。\n",
+      "10-harness/branch-management.md": "# 分支管理机制\n\n## 目标\n\n分支管理用于区分 SecondMe 中已经确认的规则、正在试运行的草案，以及用于 AB 测试的候选方案。\n\n## 核心分支\n\n### `master`\n\n`master` 保存 Vince 已确认并启用的 SecondMe 内容。\n\n适合进入 `master` 的内容：\n\n- 已确认的画像偏好和稳定事实\n- 已启用的工作流、留痕机制和低风险自动化\n- 已确认的部门职责、agent 岗位说明和 SOP\n- 已完成并通过检查的运行日志、变更记录和决策记录\n\n每日复盘中 A 档低风险更新可以直接进入 `master`，但必须可追踪、可回滚，并在日志中留痕。\n\n### `pre-release`\n\n`pre-release` 保存待确认内容、候选机制和试运行草案。\n\n适合进入 `pre-release` 的内容：\n\n- 需要 Vince 确认的 agent 提示词草案\n- 重要文档或 SOP 的候选修改\n- Vincy 表达风格、日报格式、流程口径的候选版本\n- 需要观察效果后再决定是否进入 `master` 的优化\n\n`pre-release` 中的内容不得被当作已确认事实。进入 `master` 前需要在日报或决策日志中记录确认依据。\n\n### `codex/*`\n\n`codex/*` 分支用于短期开发、实验和 AB 测试。\n\n适合使用 `codex/*` 的场景：\n\n- 一次性实现某个明确任务\n- 同时比较两个以上候选方案\n- 在进入 `pre-release` 前做临时验证\n\n完成后应明确结果：合并到 `master`、合并到 `pre-release`、继续观察，或废弃。\n\n## 自动管理规则\n\n每日复盘任务应按以下规则处理分支：\n\n1. 已确认且低风险的记录更新，提交到 `master`。\n2. 待确认但值得保留的草案，提交到 `pre-release`。\n3. 存在两种以上候选方案时，创建 `codex/ab-<topic>-<variant>` 分支，并在日报中说明差异。\n4. 不确定风险等级时，按更高风险处理，先放入 `pre-release` 或只报告不提交。\n5. 每次自动提交都应在 `logs/run-log.md` 或 `logs/change-log.md` 留痕。\n\n## 晋级流程\n\n`pre-release` 内容进入 `master` 前，应满足以下条件：\n\n- Vince 已确认采用该内容\n- 已说明变更原因和影响范围\n- 已检查不会绕过 `00-governance/permission-boundaries.md`\n- 必要时已记录到 `logs/decision-log.md`\n\n确认后可以通过 merge 或 cherry-pick 进入 `master`。\n",
+      "10-harness/policy.md": "# Harness Policy\n\n## 职责\n\npolicy 模块负责执行权限规则、审批规则和风险边界。\n\n## 当前依据\n\n- `00-governance/permission-boundaries.md`\n- `00-governance/approval-rules.md`\n\n## 未来能力\n\n- 操作前权限检查\n- 高风险动作拦截\n- 审批记录生成\n- 策略变更审计\n\n"
+};
+
+    let currentDept = departments[0];
+    let currentFileIndex = 0;
+
+    const deptList = document.getElementById("dept-list");
+    const fileList = document.getElementById("file-list");
+    const fileKicker = document.getElementById("file-kicker");
+    const deptEn = document.getElementById("dept-en");
+    const deptName = document.getElementById("dept-name");
+    const deptSummary = document.getElementById("dept-summary");
+    const deptStatus = document.getElementById("dept-status");
+    const deptOwner = document.getElementById("dept-owner");
+    const deptEntry = document.getElementById("dept-entry");
+    const responsibilities = document.getElementById("responsibilities");
+    const selectedFileTitle = document.getElementById("selected-file-title");
+    const selectedFileType = document.getElementById("selected-file-type");
+    const selectedFilePath = document.getElementById("selected-file-path");
+    const selectedFileContent = document.getElementById("selected-file-content");
+    const workflow = document.getElementById("workflow");
+
+    function renderDepartments() {
+      deptList.innerHTML = departments.map((dept) => `
+        <button class="dept-button ${dept.id === currentDept.id ? "active" : ""}" data-dept="${dept.id}">
+          <strong>${dept.name}</strong>
+          <span>${dept.en}</span>
+        </button>
+      `).join("");
+
+      deptList.querySelectorAll("button").forEach((button) => {
+        button.addEventListener("click", () => {
+          currentDept = departments.find((dept) => dept.id === button.dataset.dept);
+          currentFileIndex = 0;
+          render();
+        });
+      });
+    }
+
+    function renderFiles() {
+      fileKicker.textContent = currentDept.en;
+      fileList.innerHTML = currentDept.files.map((file, index) => `
+        <button class="file-button ${index === currentFileIndex ? "active" : ""}" data-file="${index}">
+          <strong>${file[1]}</strong>
+          <span>${file[0]}</span>
+        </button>
+      `).join("");
+
+      fileList.querySelectorAll("button").forEach((button) => {
+        button.addEventListener("click", () => {
+          currentFileIndex = Number(button.dataset.file);
+          renderContent();
+          renderFiles();
+        });
+      });
+    }
+
+    function renderContent() {
+      const file = currentDept.files[currentFileIndex];
+      deptEn.textContent = currentDept.en;
+      deptName.textContent = currentDept.name;
+      deptSummary.textContent = currentDept.summary;
+      deptStatus.textContent = currentDept.status;
+      deptOwner.textContent = currentDept.owner;
+      deptEntry.textContent = currentDept.entry;
+
+      responsibilities.innerHTML = currentDept.responsibilities.map((item) => `<li>${item}</li>`).join("");
+      selectedFileTitle.textContent = file[1];
+      selectedFileType.textContent = file[0];
+      selectedFilePath.innerHTML = `<code>${file[2]}</code>`;
+      selectedFileContent.textContent = fileContents[file[2]] || file[3];
+
+      workflow.innerHTML = currentDept.flow.map(([title, desc]) => `
+        <div class="flow-node">
+          <strong>${title}</strong>
+          <span>${desc}</span>
+        </div>
+      `).join("");
+    }
+
+    function render() {
+      renderDepartments();
+      renderFiles();
+      renderContent();
+    }
+
+    document.getElementById("reset-view").addEventListener("click", (event) => {
+      event.preventDefault();
+      currentDept = departments[0];
+      currentFileIndex = 0;
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>

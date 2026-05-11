@@ -21,3 +21,4 @@
 | 2026-04-30 | 执行 SecondMe 每日复盘 | 已完成 | 已基于今日可见工作树、`2026-04-30` AI 热点早报留痕、前序日报与本次自动化指令生成日报，追加 A0 留痕；仅提交记录型文件到 `master`，未纳入待确认求职草稿 |
 | 2026-05-12 | 新增 Vincy 需求开发工作流 | 已完成 | 已在 `01-ceo-office/vincy-demand-workflow.md` 沉淀澄清、确认、以终为始、任务拆解、验收标准和 DoD 流程 |
 | 2026-05-12 | 创建 SecondMe 项目展示页需求和 HTML 页面 | 已完成 | 需求归档至 `11-product-strategy/requirements/PS-2026-008-secondme-showcase/`，正式页面创建于 `showcase/secondme-showcase.html`；已完成锚点、响应式标记和 HTML tidy 检查，浏览器插件截图验证未完成 |
+| 2026-05-12 | 优化 SecondMe 展示页并新增 Dashboard 工作台 | 已完成 | 首页压缩字号和间距，新增 `showcase/dashboard.html`；Dashboard 保留部门侧边栏，展示职责、工作流图和部门文件原文 |
